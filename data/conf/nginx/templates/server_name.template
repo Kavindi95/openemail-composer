@@ -1,0 +1,1 @@
+server_name ${OPENEMAIL_HOSTNAME} autodiscover.* autoconfig.*;
