@@ -48,7 +48,7 @@ function quota_notification($_action, $_data = null) {
         $settings['sender'] = $redis->Get('QW_SENDER');
         $settings['html_tmpl'] = htmlspecialchars($redis->Get('QW_HTML'));
         if (empty($settings['html_tmpl'])) {
-          $settings['html_tmpl'] = htmlspecialchars(file_get_contents("/tpls/quota.tpl"));
+          $settings['html_tmpl'] = htmlspecialchars(file_get_contents("/assets/quota.tpl"));
         }
       }
       catch (RedisException $e) {
