@@ -1,4 +1,4 @@
-# Openemail - A Multi Containe,  Open Source Email and Collaboration Server
+# Openemail - A Multi Container,  Open Source Email and Collaboration Server
 
 ## Information and documentation
 
