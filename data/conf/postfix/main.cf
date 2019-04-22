@@ -1,3 +1,72 @@
 #######################
 ## GENERALS SETTINGS ##
 #######################
+
+biff = no
+append_dot_mydomain = no
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+relayhost =
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 [fe80::]/10 [fc00::]/7
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = all
+bounce_queue_lifetime = 1d
+broken_sasl_auth_clients = yes
+disable_vrfy_command = yes
+maximal_backoff_time = 1800s
+maximal_queue_lifetime = 1d
+message_size_limit = 104857600
+milter_default_action = accept
+milter_protocol = 6
+minimal_backoff_time = 300s
+plaintext_reject_code = 550
+
+########################
+## RELAY RESTRICTIONS ##
+########################
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, check_recipient_access proxy:mysql:/opt/postfix/conf/sql/mysql_tls_enforce_in_policy.cf, reject_invalid_helo_hostname, reject_unknown_reverse_client_hostname, reject_unauth_destination
+
+####################
+## TLS PARAMETERS ##
+####################
+
+# SMTP ( OUTGOING )
+# ----------------------------------------------------------------------
+smtp_tls_loglevel = 1
+smtp_tls_CAfile = {{ OEM_MAIL_SSL_CA_CRT_PATH }} 
+smtp_tls_cert_file = {{ OEM_MAIL_SSL_CRT_PATH }}
+smtp_tls_key_file = {{ OEM_MAIL_SSL_KEY_PATH }}
+smtp_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+smtp_tls_protocols = !SSLv2, !SSLv3
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+# SMTPD ( INCOMING )
+# ----------------------------------------------------------------------
+smtpd_tls_loglevel = 1
+
+# TLS PUBLIC CERTIFICATES AND PRIVATE KEY
+smtpd_tls_CAfile    = {{ OEM_MAIL_SSL_CA_CRT_PATH }}
+smtpd_tls_cert_file = {{ OEM_MAIL_SSL_CRT_PATH }}
+smtpd_tls_key_file = {{ OEM_MAIL_SSL_KEY_PATH }}
+
+smtpd_use_tls=yes
+smtpd_tls_received_header = yes
+smtpd_tls_auth_only = yes
+
+# DIFFIE-HELLMAN PARAMETERS
+smtpd_tls_dh1024_param_file = {{ OEM_MAIL_SSL_DHPARAM_1024_PATH }}
+
+# CYPHERS 
+smtpd_tls_eecdh_grade = auto
+smtpd_tls_exclude_ciphers = ECDHE-RSA-RC4-SHA, RC4, aNULL, DES-CBC3-SHA, ECDHE-RSA-DES-CBC3-SHA, EDH-RSA-DES-CBC3-SHA
+
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+
+
+
+
+
+
