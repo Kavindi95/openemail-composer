@@ -1,20 +1,21 @@
 #
 # This is an example ldap entry for gnarwl
 #
-dn: uid=babs,ou=people,o=my_org
+dn: uid=amila,ou=people,o=openemail
 objectClass: top
 objectClass: mailAccount
 objectClass: account
 objectClass: Vacation
 uid: babs
 userPassword: {crypt}kj8HsGwUBBMQA
-maildropPlace: /var/mail/babs
-mail: B.Jennings@my_org.com
-description: This is an example mailAccount
+maildropPlace: /var/vmail/openemail/amila
+mail: amila@openemail.io
+description: This is an example mailAccount 
 vacationActive: TRUE
-vacationInfo:: SGksCkknbSBjdXJyZW50bHkgb24gdmFjYXRpb24gKHNpbmNlICRiZWdpbikuIE
- kgd29uJ3QgCmF0dGVuZCBteSBtYWlsYm94IHRpbGwgJGVuZC4=
+vacationInfo:: Openemail is a Free, Open Source, and Dockerized Mail Server
+ It is your mail server. It is Open Source. It is production ready.
+ It is secure. It is fast. Zero initial configurations. 
 vacationStart: christmas
 vacationEnd: new years eve
-vacationForward: J.Doe@my_org.com
+vacationForward: dinuka@openemail.io
 
