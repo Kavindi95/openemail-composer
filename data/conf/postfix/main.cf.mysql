@@ -1,7 +1,7 @@
 #######################
 ## GENERALS SETTINGS ##
 #######################
-# ---
+
 biff = no
 mail_name = Openemail
 append_dot_mydomain = no
@@ -33,6 +33,9 @@ smtpd_error_sleep_time = 10s
 smtpd_hard_error_limit = ${stress?1}${stress:5}
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
+smtp_address_preference = ipv4
+smtp_header_checks = pcre:/opt/postfix/conf/anonymize_headers.pcre
+
 # ---
 
 ##################
@@ -70,6 +73,7 @@ smtp_tls_key_file = {{ OEM_MAIL_SSL_KEY_PATH }}
 smtp_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
 smtp_tls_protocols = !SSLv2, !SSLv3
 smtp_tls_security_level = dane
+smtp_tls_policy_maps=proxy:mysql:/opt/postfix/conf/sql/mysql_tls_policy_override_maps.cf
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
 # SMTPD ( INCOMING )
@@ -189,6 +193,7 @@ virtual_transport = lmtp:inet:dovecot:24
 
 relay_domains = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_relay_domain_maps.cf
 relay_recipient_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_relay_recipient_maps.cf
+smtp_sender_dependent_authentication = yes
 sender_dependent_default_transport_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_sender_dependent_default_transport_maps.cf
 
 ###############
@@ -235,9 +240,6 @@ sender_bcc_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_sender_bcc_maps.cf
 recipient_canonical_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_recipient_canonical_maps.cf
 recipient_canonical_classes = envelope_recipient
 
-
-
-
 #####################
 ## RSPAMD MILTERS  ##
 #####################
@@ -248,5 +250,13 @@ smtpd_milters = inet:rspamd:9900
 non_smtpd_milters = inet:rspamd:9900
 milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
 
+############
+## ZEYPLE ##
+############
 
+# Zeyple automatically encrypts outgoing emails with GPG:
+# -------------------------------------------------------
+
+#content_filter=zeyple
+# Prefere IPv4, useful for v4-only envs
 
