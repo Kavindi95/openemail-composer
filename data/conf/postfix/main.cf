@@ -39,6 +39,7 @@ smtp_header_checks = pcre:/opt/postfix/conf/anonymize_headers.pcre
 
 # The Postfix postscreen(8) daemon provides additional protection against mail server overload.
 # --------------------------------------------------------------------------------------------
+
 postscreen_access_list = permit_mynetworks, 
   cidr:/opt/postfix/conf/postscreen_access.cidr, 
   tcp:127.0.0.1:10027
@@ -78,7 +79,7 @@ postscreen_pipelining_enable = no
 ##################
 ## RESTRICTIONS ##
 ##################
-# 
+
 smtpd_relay_restrictions = permit_mynetworks,
   permit_sasl_authenticated,
   defer_unauth_destination
@@ -103,6 +104,7 @@ smtpd_sender_restrictions = reject_authenticated_sender_login_mismatch,
 
 # SMTP ( OUTGOING )
 # ----------------------------------------------------------------------
+
 smtp_tls_loglevel = 1
 smtp_tls_CAfile = {{ OEM_MAIL_SSL_CA_CRT_PATH }} 
 smtp_tls_cert_file = {{ OEM_MAIL_SSL_CRT_PATH }}
@@ -115,9 +117,12 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 
 # SMTPD ( INCOMING )
 # ----------------------------------------------------------------------
+
 smtpd_tls_loglevel = 1
 
 # TLS PUBLIC CERTIFICATES AND PRIVATE KEY
+
+smtpd_tls_CAfile = {{ OEM_MAIL_SSL_CA_CRT_PATH }} 
 smtpd_tls_cert_file = {{ OEM_MAIL_SSL_CRT_PATH }}
 smtpd_tls_key_file = {{ OEM_MAIL_SSL_KEY_PATH }}
 smtpd_use_tls=yes
@@ -130,6 +135,7 @@ smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 
 # DIFFIE-HELLMAN PARAMETERS
 # -------------------------
+
 smtpd_tls_dh1024_param_file = {{ OEM_MAIL_SSL_DHPARAM_1024_PATH }}
 
 # CYPHERS 
@@ -140,14 +146,11 @@ smtpd_tls_eecdh_grade = auto
 smtpd_tls_mandatory_ciphers = high
 smtpd_tls_exclude_ciphers = ECDHE-RSA-RC4-SHA, RC4, aNULL, DES-CBC3-SHA, ECDHE-RSA-DES-CBC3-SHA, EDH-RSA-DES-CBC3-SHA
 
-
 # LMTP ( LOCAL MAIL TRANFER PROTOCOL )
 # ----------------------------------------------------------------------
 
 lmtp_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
 lmtp_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
-
-
 
 #####################
 ## SASL PARAMETERS ##
@@ -163,6 +166,7 @@ broken_sasl_auth_clients = yes
 
 # Outgoing
 # -------------------------------
+
 smtp_sasl_auth_enable = yes
 smtp_sasl_auth_soft_bounce = no
 smtp_sasl_password_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_sasl_passwd_maps_sender_dependent.cf
@@ -257,4 +261,3 @@ milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
 
 #content_filter=zeyple
 # Prefere IPv4, useful for v4-only envs
-
