@@ -156,4 +156,51 @@ virtual_mailbox_domains = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_domain
 virtual_mailbox_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_mailbox_maps.cf
 virtual_transport = lmtp:inet:dovecot:24
 
+###############
+## PROXYMAP  ##
+###############
+
+# The  proxymap(8)  server  provides read-only or read-write table lookup service to Postfix processes. 
+# -----------------------------------------------------------------------------------------------------]
+
+proxy_read_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_sender_acl.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_tls_policy_override_maps.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_sender_dependent_default_transport_maps.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_transport_maps.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_sasl_passwd_maps_sender_dependent.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_sasl_passwd_maps_transport_maps.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_tls_enforce_in_policy.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_sender_bcc_maps.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_recipient_bcc_maps.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_recipient_canonical_maps.cf,
+  $local_recipient_maps,
+  $mydestination,
+  $virtual_alias_maps,
+  $virtual_alias_domains,
+  $virtual_mailbox_maps,
+  $virtual_mailbox_domains,
+  $relay_recipient_maps,
+  $relay_domains,
+  $canonical_maps,
+  $sender_canonical_maps,
+  $recipient_canonical_maps,
+  $relocated_maps,
+  $transport_maps,
+  $mynetworks,
+  $smtpd_sender_login_maps
+  
+
+  
+
+#####################
+## RSPAMD MILTERS  ##
+#####################
+
+# Rspamd will take care of DKIM/DMARC and CLAMAV
+
+smtpd_milters = inet:rspamd:9900
+non_smtpd_milters = inet:rspamd:9900
+milter_mail_macros = i {mail_addr} {client_addr} {client_name} {auth_authen}
+
+
 
