@@ -102,4 +102,21 @@ postscreen_pipelining_enable = no
 ## SASL PARAMETERS ##
 #####################
 
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_authenticated_header = yes
+smtpd_sasl_path = inet:dovecot:10001
+smtpd_sasl_type = dovecot
+
+##############################
+## VIRTUALS MAPS PARAMETERS ##
+##############################
+
+virtual_alias_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_maps.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_spamalias_maps.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_domain_maps.cf,
+  proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_domain_catchall_maps.cf
+virtual_gid_maps = static:5000
+virtual_mailbox_base = /var/vmail/
+virtual_mailbox_domains = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_domains_maps.cf
+
 
