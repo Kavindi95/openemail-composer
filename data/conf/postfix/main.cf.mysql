@@ -1,7 +1,7 @@
 #######################
 ## GENERALS SETTINGS ##
 #######################
-
+# ---
 biff = no
 mail_name = Openemail
 append_dot_mydomain = no
@@ -31,11 +31,14 @@ smtpd_helo_required = yes
 smtpd_proxy_timeout = 600s
 smtpd_error_sleep_time = 10s
 smtpd_hard_error_limit = ${stress?1}${stress:5}
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+# ---
 
 ##################
 ## RESTRICTIONS ##
 ##################
-
+# 
 smtpd_relay_restrictions = permit_mynetworks,
   permit_sasl_authenticated,
   defer_unauth_destination
@@ -47,6 +50,12 @@ smtpd_recipient_restrictions = permit_sasl_authenticated,
   reject_unauth_destination
 smtpd_data_restrictions = reject_unauth_pipelining, 
   permit
+smtpd_sender_login_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_sender_acl.cf
+smtpd_sender_restrictions = reject_authenticated_sender_login_mismatch, 
+  permit_mynetworks, 
+  permit_sasl_authenticated, 
+  reject_unlisted_sender, 
+  reject_unknown_sender_domain
 
 ####################
 ## TLS PARAMETERS ##
@@ -79,9 +88,11 @@ smtpd_tls_security_level = may
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 
 # DIFFIE-HELLMAN PARAMETERS
+# -------------------------
 smtpd_tls_dh1024_param_file = {{ OEM_MAIL_SSL_DHPARAM_1024_PATH }}
 
 # CYPHERS 
+
 tls_preempt_cipherlist = yes
 tls_ssl_options = NO_COMPRESSION
 smtpd_tls_eecdh_grade = auto
@@ -151,6 +162,7 @@ smtpd_sasl_type = dovecot
 # Outgoing
 # -------------------------------
 smtp_sasl_auth_enable = yes
+smtp_sasl_auth_soft_bounce = no
 smtp_sasl_password_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_sasl_passwd_maps_sender_dependent.cf
 smtp_sasl_security_options = 
 smtp_sasl_mechanism_filter = plain, login
