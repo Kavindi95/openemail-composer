@@ -15,7 +15,6 @@ recipient_delimiter = +
 inet_interfaces = all
 inet_protocols = all
 bounce_queue_lifetime = 1d
-broken_sasl_auth_clients = yes
 disable_vrfy_command = yes
 maximal_backoff_time = 1800s
 maximal_queue_lifetime = 1d
@@ -33,8 +32,6 @@ smtpd_error_sleep_time = 10s
 smtpd_hard_error_limit = ${stress?1}${stress:5}
 smtp_address_preference = ipv4
 smtp_header_checks = pcre:/opt/postfix/conf/anonymize_headers.pcre
-
-# ---
 
 ##################
 ## RESTRICTIONS ##
@@ -160,6 +157,7 @@ smtpd_sasl_auth_enable = yes
 smtpd_sasl_authenticated_header = yes
 smtpd_sasl_path = inet:dovecot:10001
 smtpd_sasl_type = dovecot
+broken_sasl_auth_clients = yes
 
 # Outgoing
 # -------------------------------
