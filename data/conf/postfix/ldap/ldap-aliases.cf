@@ -1,11 +1,11 @@
-server_host = localhost
-server_port = 389
+server_host = {{ LDAP_SERVER_HOST }}
+server_port = {{ LDAP_SERVER_PORT }}
 version = 3
 bind = yes
 start_tls = no
-bind_dn = cn=phamm,o=hosting,dc=example,dc=tld
-bind_pw = readonly
-search_base = o=hosting,dc=example,dc=tld
+bind_dn = cn=phamm,o=hosting,{{ BASE_DN }}
+bind_pw = {{ BIND_PW }} 
+search_base = o=hosting,{{ BASE_DN }}
 scope = sub
 query_filter = (&(&(objectClass=VirtualMailAlias)(mail=%s))(accountActive=TRUE))
 result_attribute = maildrop 
