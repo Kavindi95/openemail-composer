@@ -1,0 +1,91 @@
+dn:vd=openemail.io,o=openemail,dc=openemail,dc=io
+objectClass: top
+objectClass: VirtualDomain
+postfixTransport: maildrop:
+lastChange: 1066742030
+vd: openemail.io
+delete: FALSE
+accountActive: TRUE
+adminID: cn=oeadmin,ou=admin,dc=openemail,dc=io
+editAV: FALSE
+maxAlias: 20
+maxMail: 10
+maxQuota: 250
+
+dn:cn=postmaster,vd=openemail.io,o=openemail,dc=openemail,dc=io
+objectClass: top
+objectClass: VirtualMailAlias
+mail: postmaster@openemail.io
+lastChange: 1066742031
+maildrop: postmaster
+accountActive: TRUE
+cn: postmaster
+sn: postmaster
+userPassword: {SSHA}1jIr4pmLM2Q3OokfYSSnHJMOi0ZUTvyz
+editAccounts: FALSE
+
+dn:mail=abuse@openemail.io,vd=openemail.io,o=openemail,dc=openemail,dc=io
+objectClass: top
+objectClass: VirtualMailAlias
+mail: abuse@openemail.io
+lastChange: 1066742031
+maildrop: postmaster
+accountActive: TRUE
+cn: abuse
+sn: abuse
+
+dn:mail=amila@openemail.io,vd=openemail.io,o=openemail,dc=openemail,dc=io
+objectClass: top
+objectClass: VirtualMailAccount
+objectClass: Vacation
+objectClass: amavisAccount
+objectClass: VirtualForward
+mail: amila@openemail.io
+vdHome: /var/vmail
+mailbox: openemail.io/amila/
+delete: FALSE
+accountActive: TRUE
+sn: Kothalwala
+userPassword: {SSHA}1jIr4pmLM2Q3OokfYSSnHJMOi0ZUTvyz
+description: Vacation description
+vacationActive: FALSE
+vacationStart: 20101010000
+vacationEnd: 201001010000
+forwardActive: FALSE
+lastChange: 1108499016
+cn: Amila
+quota: 52428800S
+amavisSpamKillLevel: 6.0
+amavisSpamTag2Level: 5.5
+amavisSpamTagLevel: 3.0
+amavisBypassVirusChecks: FALSE
+amavisBypassSpamChecks: TRUE
+mailAutoreply: amila@openemail.io
+
+dn:mail=dinuka@openemail.io,vd=openemail.io,o=openemail,dc=openemail,dc=io
+objectClass: top
+objectClass: VirtualMailAccount
+objectClass: Vacation
+objectClass: amavisAccount
+objectClass: VirtualForward
+mail: dinuka@openemail.io
+vdHome: /var/vmail
+mailbox: openemail.io/dinuka/
+delete: FALSE
+accountActive: TRUE
+sn: Nanayakkara
+userPassword: {SSHA}1jIr4pmLM2Q3OokfYSSnHJMOi0ZUTvyz
+description: Vacation description
+vacationActive: FALSE
+vacationStart: 201001010000
+vacationEnd: 201001010000
+amavisBypassVirusChecks: TRUE
+amavisBypassSpamChecks: FALSE
+forwardActive: FALSE
+lastChange: 1108499023
+cn: Dinuka
+quota: 52428800S
+amavisSpamKillLevel: 6.0
+amavisSpamTag2Level: 5.5
+amavisSpamTagLevel: 3.0
+mailAutoreply: dinuka@openemail.io
