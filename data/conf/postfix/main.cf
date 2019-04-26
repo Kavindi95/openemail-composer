@@ -107,9 +107,9 @@ smtpd_sender_restrictions = reject_authenticated_sender_login_mismatch,
 # ----------------------------------------------------------------------
 
 smtp_tls_loglevel = 1
-smtp_tls_CAfile = {{ OEM_MAIL_SSL_CA_CRT_PATH }} 
-smtp_tls_cert_file = {{ OEM_MAIL_SSL_CRT_PATH }}
-smtp_tls_key_file = {{ OEM_MAIL_SSL_KEY_PATH }}
+smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt 
+smtp_tls_cert_file = /etc/ssl/mail/cert.pem
+smtp_tls_key_file = /etc/ssl/mail/key.pem
 smtp_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
 smtp_tls_protocols = !SSLv2, !SSLv3
 smtp_tls_security_level = dane
@@ -123,9 +123,9 @@ smtpd_tls_loglevel = 1
 
 # TLS PUBLIC CERTIFICATES AND PRIVATE KEY
 
-smtpd_tls_CAfile = {{ OEM_MAIL_SSL_CA_CRT_PATH }} 
-smtpd_tls_cert_file = {{ OEM_MAIL_SSL_CRT_PATH }}
-smtpd_tls_key_file = {{ OEM_MAIL_SSL_KEY_PATH }}
+smtpd_tls_CAfile = /etc/ssl/certs/ca-certificates.crt 
+smtpd_tls_cert_file = /etc/ssl/mail/cert.pem
+smtpd_tls_key_file = /etc/ssl/mail/key.pem
 smtpd_use_tls=yes
 smtpd_tls_received_header = yes
 smtpd_tls_auth_only = yes
@@ -137,7 +137,7 @@ smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 # DIFFIE-HELLMAN PARAMETERS
 # -------------------------
 
-smtpd_tls_dh1024_param_file = {{ OEM_MAIL_SSL_DHPARAM_1024_PATH }}
+smtpd_tls_dh1024_param_file = /etc/ssl/mail/dhparams.pem
 
 # CYPHERS 
 
