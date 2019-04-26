@@ -180,7 +180,10 @@ smtp_sasl_mechanism_filter = plain, login
 virtual_alias_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_maps.cf,
   proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_spamalias_maps.cf,
   proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_domain_maps.cf,
-  proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_domain_catchall_maps.cf
+  proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_domain_catchall_maps.cf,
+  ldap:/opt/postfix/ldap-aliases.cf,
+  ldap:/opt/postfix/ldap-virtualforward.cf,
+  ldap:/opt/postfix/ldap-accountsmap.cf
 virtual_minimum_uid = 104
 virtual_uid_maps = static:5000
 virtual_gid_maps = static:5000
@@ -218,6 +221,7 @@ proxy_read_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_sender_acl.cf,
   ldap:/opt/postfix/conf/ldap/ldap-accounts.cf,
   ldap:/opt/postfix/conf/ldap/ldap-accountsmap.cf,
   ldap:/opt/postfix/conf/ldap/ldap-aliases.cf,
+  
   
   $local_recipient_maps,
   $mydestination,
