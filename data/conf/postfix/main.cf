@@ -91,7 +91,8 @@ smtpd_recipient_restrictions = permit_sasl_authenticated,
   reject_unauth_destination
 smtpd_data_restrictions = reject_unauth_pipelining, 
   permit
-smtpd_sender_login_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_sender_acl.cf
+smtpd_sender_login_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_sender_acl.cf,
+  ldap:/opt/postfix/ldap/ldap-accounts.cf
 smtpd_sender_restrictions = reject_authenticated_sender_login_mismatch, 
   permit_mynetworks, 
   permit_sasl_authenticated, 
@@ -191,7 +192,7 @@ virtual_mailbox_base = /var/vmail/
 virtual_mailbox_domains = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_domains_maps.cf,
   ldap:/opt/postfix/ldap-domains.cf
 virtual_mailbox_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_mailbox_maps.cf,
-  ldap:/opt/postfix/ldap-accounts.cf
+  ldap:/opt/postfix/ldap/ldap-accounts.cf
 virtual_transport = lmtp:inet:dovecot:24
 
 #################
