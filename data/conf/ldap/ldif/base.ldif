@@ -1,12 +1,12 @@
-dn: o={{ ORGANIZATION }},{{ BASE_DN }}
+dn: o=openemail,dc=openemail,dc=io
 objectClass: organization
 objectClass: top
 o: hosting description: Openemail Organization
 # Read only account
 
-dn: cn=vmail,o={{ ORGANIZATION }},{{ BASE_DN }}
+dn: cn=vmail,o=openemail,dc=openemail,dc=io
 objectClass: simpleSecurityObject
 objectClass: organizationalRole
 cn: vmail
-userPassword: {SSHA}D97C/W30fbYKMXtMncIAAwyZW0pEZ82N
+userPassword: {SSHA}1jIr4pmLM2Q3OokfYSSnHJMOi0ZUTvyz
 description: Read only account
