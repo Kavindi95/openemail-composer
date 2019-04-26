@@ -1,4 +1,3 @@
-                <!--
                 <example>
                     <key>canAuthenticate</key>
                     <string>YES</string>
@@ -9,7 +8,7 @@
                     <key>IDFieldName</key>
                     <string>mail</string>
                     <key>UIDFieldName</key>
-                    <string>uid</string>
+                    <string>mail</string>
                     <key>bindFields</key>
                     <array>
                         <string>mail</string>
@@ -17,12 +16,12 @@
                     <key>type</key>
                     <string>ldap</string>
                     <key>bindDN</key>
-                    <string>${ADMIN_DN}</string>
+                    <string>cn=vmail,o=openemail,${MAIL_LDAP_BASE_DN}</string>
                     <key>password</key>
-                    <string>${ADMINPASS}</string>
+                    <string>${MAIL_LDAP_BIND_PW}</string>
                     <key>baseDN</key>
-                    <string>ou=People,${BASE_DN}</string>
+                    <string>o=openemail,${MAIL_LDAP_BASE_DN}</string>
                     <key>hostname</key>
-                    <string>ldap://${LDAP1_HOST}:389</string>
+                    <string>ldap://${MAIL_LDAP_HOST}:389</string>
                 </example>
-                -->
+     
