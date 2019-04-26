@@ -3,9 +3,9 @@ server_port = {{ LDAP_SERVER_PORT }}
 version = 3
 bind = yes
 start_tls = no
-bind_dn = cn=phamm,o=hosting,{{ MAIL_LDAP_BASE_DN  }}
+bind_dn = cn=phamm,o=openemail,{{ MAIL_LDAP_BASE_DN  }}
 bind_pw = {{ MAIL_LDAP_BIND_PW }} 
-search_base = o=hosting,{{ MAIL_LDAP_BASE_DN }}
+search_base = o=openemail,{{ MAIL_LDAP_BASE_DN }}
 scope = sub
 query_filter = (&(&(objectClass=VirtualMailAlias)(mail=%s))(accountActive=TRUE))
 result_attribute = maildrop 
