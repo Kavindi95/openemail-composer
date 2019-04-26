@@ -181,15 +181,17 @@ virtual_alias_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_maps.
   proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_spamalias_maps.cf,
   proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_domain_maps.cf,
   proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_domain_catchall_maps.cf,
-  ldap:/opt/postfix/ldap-aliases.cf,
-  ldap:/opt/postfix/ldap-virtualforward.cf,
-  ldap:/opt/postfix/ldap-accountsmap.cf
+  ldap:/opt/postfix/ldap/ldap-aliases.cf,
+  ldap:/opt/postfix/ldap/ldap-virtualforward.cf,
+  ldap:/opt/postfix/ldap/ldap-accountsmap.cf
 virtual_minimum_uid = 104
 virtual_uid_maps = static:5000
 virtual_gid_maps = static:5000
 virtual_mailbox_base = /var/vmail/
-virtual_mailbox_domains = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_domains_maps.cf
-virtual_mailbox_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_mailbox_maps.cf
+virtual_mailbox_domains = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_domains_maps.cf,
+  ldap:/opt/postfix/ldap-domains.cf
+virtual_mailbox_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_mailbox_maps.cf,
+  ldap:/opt/postfix/ldap-accounts.cf
 virtual_transport = lmtp:inet:dovecot:24
 
 #################
@@ -221,8 +223,10 @@ proxy_read_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_sender_acl.cf,
   ldap:/opt/postfix/conf/ldap/ldap-accounts.cf,
   ldap:/opt/postfix/conf/ldap/ldap-accountsmap.cf,
   ldap:/opt/postfix/conf/ldap/ldap-aliases.cf,
-  
-  
+  ldap:/opt/postfix/conf/ldap/ldap-domains.cf,
+  ldap:/opt/postfix/conf/ldap/ldap-transport.cf,
+  ldap:/opt/postfix/conf/ldap/ldap-vacation.cf,
+  ldap:/opt/postfix/conf/ldap/ldap-virtualforward.cf,
   $local_recipient_maps,
   $mydestination,
   $virtual_alias_maps,
@@ -244,7 +248,8 @@ proxy_read_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_sender_acl.cf,
 ####################
 
 transport_maps = pcre:/opt/postfix/conf/local_transport, 
-  proxy:mysql:/opt/postfix/conf/sql/mysql_transport_maps.cf
+  proxy:mysql:/opt/postfix/conf/sql/mysql_transport_maps.cf,
+   ldap:/opt/postfix/conf/ldap/ldap-transport.cf
 recipient_bcc_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_recipient_bcc_maps.cf
 sender_bcc_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_sender_bcc_maps.cf
 recipient_canonical_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_recipient_canonical_maps.cf
