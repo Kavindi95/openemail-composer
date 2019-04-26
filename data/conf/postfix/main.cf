@@ -190,7 +190,7 @@ virtual_uid_maps = static:5000
 virtual_gid_maps = static:5000
 virtual_mailbox_base = /var/vmail/
 virtual_mailbox_domains = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_domains_maps.cf,
-  ldap:/opt/postfix/ldap-domains.cf
+  ldap:/opt/postfix/ldap/ldap-domains.cf
 virtual_mailbox_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_mailbox_maps.cf,
   ldap:/opt/postfix/ldap/ldap-accounts.cf
 virtual_transport = lmtp:inet:dovecot:24
