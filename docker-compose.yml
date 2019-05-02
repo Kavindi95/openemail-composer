@@ -173,7 +173,7 @@ services:
         - ./data/conf/dovecot:/usr/local/etc/dovecot
         - ./data/assets/ssl:/etc/ssl/mail/:ro
         - ./data/conf/sogo/:/etc/sogo/
-        - vmail-vol-1:/var/vmailSUBDOMAINS
+        - vmail-vol-1:/var/vmail
         - vmail-attachments-vol-1:/var/attachments
         - crypt-vol-1:/mail_crypt/
         - ./data/conf/rspamd/custom/:/etc/rspamd/custom
@@ -307,7 +307,36 @@ services:
         openemail-network:
           aliases:
             - nginx
-
+            
+   acme-openemail:
+      depends_on:
+        - nginx-openemail
+      image: openemail/acme:1.48
+      container_name:  acme-openemail
+      dns:
+        - ${IPV4_NETWORK:-172.22.1}.254
+      environment:
+        - LOG_LINES=${LOG_LINES:-9999}
+        - ADDITIONAL_SAN=${ADDITIONAL_SAN}
+        - OPENEMAIL_HOSTNAME=${OPENEMAIL_HOSTNAME}
+        - DBNAME=${DBNAME}
+        - DBUSER=${DBUSER}
+        - DBPASS=${DBPASS}
+        - SKIP_LETS_ENCRYPT=${SKIP_LETS_ENCRYPT:-n}
+        - SKIP_IP_CHECK=${SKIP_IP_CHECK:-n}
+        - LE_STAGING=${LE_STAGING:-n}
+        - TZ=${TZ}
+      volumes:
+        - ./data/web/.well-known/acme-challenge:/var/www/acme:rw
+        - ./data/assets/ssl:/var/lib/acme/:rw
+        - ./data/assets/ssl-example:/var/lib/ssl-example/:ro
+        - mysql-socket-vol-1:/var/run/mysqld/
+      restart: always
+      networks:
+        openemail-network:
+          aliases:
+            - acme
+            
    netfilter-openemail:
       image: openemail/netfilter:1.22
       container_name: netfilter-openemail
