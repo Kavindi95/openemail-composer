@@ -70,7 +70,7 @@ POSTFIX_LOOKUP_MYSQL_DIR: '/etc/postfix/mysql'
 # LEARN MORE: http://www.postfix.org/postconf.5.html#mail_owner                #
 # DEFAULT: postfix.                                                            #
 #------------------------------------------------------------------------------#
-POSTFIX_MAIL_OWNER: OpenEMAIL
+POSTFIX_MAIL_OWNER: postfix
 
 #------------------------------------------------------------------------------#
 # POSTFIX_SENDMAIL_PATH                                                        #
