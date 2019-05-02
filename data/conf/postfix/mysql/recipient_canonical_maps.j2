@@ -1,0 +1,11 @@
+########################################
+##  POSTFIX RECIPIENT CANONICAL MAPS  ##
+########################################
+
+hosts       = {{ OE_SQL_SERVER_HOST }}:{{ OE_SQL_SERVER_PORT }}
+user        = {{ OE_DB_BIND_USER }}
+password    = {{ OE_DB_BIND_PASSWD }}
+dbname      = {{ OE_DB_NAME }}
+query       = SELECT new_dest FROM recipient_maps
+              WHERE old_dest='%s'
+              AND active='1';

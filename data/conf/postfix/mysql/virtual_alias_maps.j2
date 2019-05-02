@@ -1,0 +1,11 @@
+##################################
+##  POSTFIX VIRTUAL ALIAS MAPS  ##
+##################################
+
+hosts       = {{ OE_SQL_SERVER_HOST }}:{{ OE_SQL_SERVER_PORT }}
+user        = {{ OE_DB_BIND_USER }}
+password    = {{ OE_DB_BIND_PASSWD }}
+dbname      = {{ OE_DB_NAME }}
+query       = SELECT goto FROM alias
+              WHERE address='%s'
+              AND active='1';

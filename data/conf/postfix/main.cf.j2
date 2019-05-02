@@ -1,0 +1,949 @@
+################################################################################
+# Author: Chinthaka Deshapriya <chinthaka@cybergate.lk>                        #
+################################################################################
+# This file is part of OpenEMAIL, which is an open source mail server          #
+# solution which runs in set of DOCKER CONTAINERS.                             #
+#                                                                              #
+# OpenEMAIL is free software: you can redistribute it and/or modify            #
+# it under the terms of the GNU General Public License as published by         #
+# the Free Software Foundation, either version 3 of the License, or            #
+# (at your option) any later version.                                          #
+#                                                                              #
+# OpenEMAIL is distributed in the hope that it will be useful for              #
+# your purpose  but WITHOUT ANY WARRANTY; without even the implied             #
+# warranty of    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.          #
+# See the  GNU General Public License for more details.                        #
+#                                                                              #
+# You should have received a copy of the GNU General Public License            #
+# along with OpenEMAIL.  If not, see <http://www.gnu.org/licenses/>.           #
+################################################################################
+
+################################################################################
+#                   POSTFIX MAIN.CF CONFIGURATION FILE                         #
+################################################################################
+
+#------------------------------------------------------------------------------#
+# POSTFIX_QUEUE_DIRECTORY                                                      #
+#------------------------------------------------------------------------------#
+# DEFAULT: /var/spool/postfix.                                                 #
+# LEARN MORE: http://www.postfix.org/postconf.5.html#queue_directory           #
+#------------------------------------------------------------------------------#
+queue_directory = {{ POSTFIX_QUEUE_DIRECTORY }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_COMMAND_DIRECTORY                                                    #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#command_directory         #
+# DEFAULT: /usr/sbin                                                           #
+#------------------------------------------------------------------------------#
+command_directory =  {{ POSTFIX_COMMAND_DIRECTORY }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_DAEMON_DIRECTORY                                                     #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#daemon_directory          #
+# DEFAULT: /usr/libexec/postfix                                                #
+#------------------------------------------------------------------------------#
+daemon_directory = {{ POSTFIX_DAEMON_DIRECTORY }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_DATA_DIRECTORY                                                       #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#data_directory            #
+# DEFAULT: /var/lib/postfix.                                                   #
+#------------------------------------------------------------------------------#
+data_directory = {{ POSTFIX_DATA_DIRECTORY }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MAIL_OWNER                                                           #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#mail_owner                #
+# DEFAULT: postfix.                                                            #
+#------------------------------------------------------------------------------#
+mail_owner = {{ POSTFIX_MAIL_OWNER }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SENDMAIL_PATH                                                        #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#sendmail_path             #
+# DEFAULT: "postconf -d sendmail_path" output                                  #
+#------------------------------------------------------------------------------#
+sendmail_path = {{ POSTFIX_SENDMAIL_PATH }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_NEWALIASES_PATH                                                      #
+#------------------------------------------------------------------------------#
+# LERAN MORE: http://www.postfix.org/postconf.5.html#newaliases_path           #
+# DEFAULT: "postconf -d newaliases_path" output                                #
+#------------------------------------------------------------------------------#
+newaliases_path = {{ POSTFIX_NEWALIASES_PATH }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MAIL_QUEUE_PATH                                                      #
+#------------------------------------------------------------------------------#
+# LEARN MORE http://www.postfix.org/postconf.5.html#mailq_path                 #
+# DEFAULT: "postconf -d mailq_path" output.                                    #
+#------------------------------------------------------------------------------#
+mailq_path = {{ POSTFIX_MAIL_QUEUE_PATH }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SETGID_GROUP
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#setgid_group              #
+# DEFAULT: postdrop                                                            #
+#------------------------------------------------------------------------------#
+setgid_group = {{ POSTFIX_SETGID_GROUP }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_DEBUGGER_COMMAND                                                     #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#debugger_command          #
+# DEFAULT: empty                                                               #
+#------------------------------------------------------------------------------#
+debugger_command = {{ POSTFIX_DEBUGGER_COMMAND }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_DEBUG_PEER_LEVEL                                                     #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#debug_peer_level          #
+# DEFAULT: 2                                                                   #
+#------------------------------------------------------------------------------#
+debug_peer_level = {{ POSTFIX_DEBUG_PEER_LEVEL }}
+
+################################################################################
+#                       POSTFIX GENERAL SETTINGS                               #
+################################################################################
+
+#------------------------------------------------------------------------------#
+# POSTFIX_UNKNOWN_LOCAL_RECIPIENT_REJECT_CODE                                  #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#unknown_local_recipient_reject_code   #  .
+# DEFAULT: 550                                                                 #
+#------------------------------------------------------------------------------#
+unknown_local_recipient_reject_code = 550
+
+#------------------------------------------------------------------------------#
+# POSTFIX_BIFF                                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#biff                      #
+# DEFAULT NO:                                                                  #
+#------------------------------------------------------------------------------#
+biff = {{ POSTFIX_BIFF }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MAIL_NAME                                                            #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#mail_name                 #
+# DEFAULT: Postfix                                                             #
+#------------------------------------------------------------------------------#
+mail_name = {{ POSTFIX_MAIL_NAME }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MYHOSTNAME                                                           #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#myhostname                #
+# DEFAULT: See "postconf -d myhostname" output                                 #
+#------------------------------------------------------------------------------#
+myhostname = {{ POSTFIX_MYHOSTNAME }}
+#------------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MYORIGIN                                                             #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#myorigin                  #
+# DEFAULT: See "postconf -d myorigin"  output                                  #
+#------------------------------------------------------------------------------#
+myorigin = {{ POSTFIX_MYORIGIN }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MYDOMAIN                                                             #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#myorigin                  #
+# DEFAULT: See "postconf -d mydomain" output                                   #
+#------------------------------------------------------------------------------#
+mydomain = {{ POSTFIX_MYDOMAIN }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MYNETWORKS                                                           #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#mynetworks                #
+# DEFAULT: See "postconf -d mynetworks" output                                 #
+#------------------------------------------------------------------------------#
+mynetworks = {{ POSTFIX_MYNETWORKS }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MYDESTINATION                                                        #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#mydestination             #
+# DEFAULT: $myhostname, localhost.$mydomain, localhost                         #
+#------------------------------------------------------------------------------#
+mydestination = {{ POSTFIX_MYHOSTNAME }}, localhost, localhost.{{ POSTFIX_MYDOMAIN}}
+
+#------------------------------------------------------------------------------#
+#  POSTFIX_ALIAS_MAPS                                                          #
+#------------------------------------------------------------------------------#
+# The alias databases that are used for local(8) delivery.                     #
+# LEARN MORE: http://www.postfix.org/postconf.5.html#alias_maps                #
+#------------------------------------------------------------------------------#
+alias_maps = hash:{{ POSTFIX_ALIAS_MAPS }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_ALIAS_DATABASE                                                       #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#alias_database            #
+# DEFAULT: See "postconf -d alias_database" output                             #
+#------------------------------------------------------------------------------#
+alias_database = hash:{{ POSTFIX_ALIAS_DATABASE }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_RELAYHOST                                                            #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#relayhost                 #
+#------------------------------------------------------------------------------#
+relayhost = {{ POSTFIX_RELAYHOST }}
+
+#------------------------------------------------------------------------------#
+#  POSTFIX_MESSAGE_SIZE_LIMIT_BYTES                                            #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#message_size_limit        #
+# DEFAULT: message_size_limit in bytes.                                         #
+#------------------------------------------------------------------------------#
+message_size_limit = {{ POSTFIX_MESSAGE_SIZE_LIMIT_BYTES }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_RECIPIENT_DELIMITER                                                  #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#recipient_delimiter       #
+# DEFAULT: empty                                                               #
+#------------------------------------------------------------------------------#
+recipient_delimiter = {{ POSTFIX_RECIPIENT_DELIMITER }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_DELAY_WARNING_TIME                                                   #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#delay_warning_time        #
+# DEFAULT: 0h
+#------------------------------------------------------------------------------#
+delay_warning_time = {{ POSTFIX_DELAY_WARNING_TIME }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_APPEND_DOT_DOMAIN                                                    #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#append_dot_mydomain       #
+# DEFAULT: Postfix                                                             #
+#------------------------------------------------------------------------------#
+append_dot_mydomain = {{ POSTFIX_APPEND_DOT_DOMAIN }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MAILBOX_SIZE_LIMIT                                                   #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#mailbox_size_limit        #
+# DEFAULT: 51200000                                                            #
+#------------------------------------------------------------------------------#
+mailbox_size_limit = {{ POSTFIX_MAILBOX_SIZE_LIMIT }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_BOUNCE_QUEUE_LIFE_TIME                                               #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#bounce_queue_lifetime     #
+# DEFAULT: 5d                                                                  #
+#------------------------------------------------------------------------------#
+bounce_queue_lifetime = {{ POSTFIX_BOUNCE_QUEUE_LIFE_TIME }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MAXIMAL_BACKOFF_TIME                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#maximal_backoff_time      #
+# DEFAULT: 4000s                                                               #
+#------------------------------------------------------------------------------#
+maximal_backoff_time = {{ POSTFIX_MAXIMAL_BACKOFF_TIME }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MAXIMAL_QUEUE_LIFETIME                                               #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#maximal_queue_lifetime    #
+# DEFAULT: 5d                                                                  #
+#------------------------------------------------------------------------------#
+maximal_queue_lifetime =  {{ POSTFIX_MAXIMAL_QUEUE_LIFETIME }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MILTER_DEFAULT_ACTION                                                #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#milter_default_action     #
+# DEFAULT: tempfail                                                            #
+#------------------------------------------------------------------------------#
+milter_default_action = {{ POSTFIX_MILTER_DEFAULT_ACTION }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MILTER_PROTOCOL                                                      #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#milter_protocol           #
+# DEFAULT: 6                                                                   #
+#------------------------------------------------------------------------------#
+milter_protocol = {{ POSTFIX_MILTER_PROTOCOL }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_MINIMAL_BACKOFF_TIME                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#minimal_backoff_time      #
+# DEFAULT: 300s                                                                #
+#------------------------------------------------------------------------------#
+minimal_backoff_time = {{ POSTFIX_MINIMAL_BACKOFF_TIME }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_PLAINTEXT_REJECT_CODE                                                #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#plaintext_reject_code     #
+# DEFAULT: 450                                                                 #
+#------------------------------------------------------------------------------#
+plaintext_reject_code = {{ POSTFIX_PLAINTEXT_REJECT_CODE }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_QUEUE_RUN_DELAY                                                      #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#queue_run_delay           #
+# DEFAULT: 300s                                                                #
+#------------------------------------------------------------------------------#
+queue_run_delay = {{ POSTFIX_QUEUE_RUN_DELAY }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTP_DNS_SUPPORT_LEVEL                                               #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtp_dns_support_level    #
+# DEFAULT: empty                                                               #
+#------------------------------------------------------------------------------#
+smtp_dns_support_level = {{ POSTFIX_SMTP_DNS_SUPPORT_LEVEL }}
+
+#------------------------------------------------------------------------------#
+# POSTFX_SMTPD_DELAY_REJECT                                                    #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_delay_reject        #
+# DEFAULT: yes                                                                 #
+#------------------------------------------------------------------------------#
+smtpd_delay_reject = {{ POSTFIX_SMTPD_DELAY_REJECT }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_PROXY_TIMEOUT                                                  #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_proxy_timeout       #
+# DEFAULT: 100s                                                                #
+#------------------------------------------------------------------------------#
+smtpd_proxy_timeout = {{ POSTFIX_SMTPD_PROXY_TIMEOUT }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_ERROR_SLEEP_TIME                                               #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_error_sleep_time    #
+# DEFAULT: 1s                                                                  #
+#------------------------------------------------------------------------------#
+smtpd_error_sleep_time = {{ POSTFIX_SMTPD_ERROR_SLEEP_TIME }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_HARD_ERROR_LIMIT                                               #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_hard_error_limit    #
+# DEFAULT: normal: 20, overload: 1                                             #
+#------------------------------------------------------------------------------#
+smtpd_hard_error_limit = {{ POSTFIX_SMTPD_HARD_ERROR_LIMIT }}
+
+#------------------------------------------------------------------------------#
+#  POSTFIX_SMTPD_ADDRESS_PREFERENCE                                            #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtp_address_preference   #
+# DEFAULT: any                                                                 #
+#------------------------------------------------------------------------------#
+smtp_address_preference = {{ POSTFIX_SMTPD_ADDRESS_PREFERENCE }}
+
+smtp_sender_dependent_authentication = {{ POSTFIX_SMTP_SENDER_DEPENDENT_AUTHENTICATION }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SWAG_BANGPATH                                                        #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#swap_bangpath             #
+# DEFAULT: yes                                                                 #
+#------------------------------------------------------------------------------#
+swap_bangpath = {{ POSTFIX_SWAG_BANGPATH }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_ALLOW_PERCENT_HACK                                                   #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#allow_percent_hack        #
+# DEFAULT: yes                                                                 #
+#------------------------------------------------------------------------------#
+allow_percent_hack = {{ POSTFIX_ALLOW_PERCENT_HACK }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_ALLOW_MIN_USER                                                       #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#allow_min_user            #
+# DEFAULT: no                                                                  #
+#------------------------------------------------------------------------------#
+allow_min_user = {{ POSTFIX_ALLOW_MIN_USER }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_DISABLE_VRFY_COMMAND                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#disable_vrfy_command      #
+# DEFAULT: no                                                                  #
+#------------------------------------------------------------------------------#
+disable_vrfy_command = {{ POSTFIX_DISABLE_VRFY_COMMAND }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_INET_PROTOCOLS                                                       #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#inet_protocols            #
+# DEFAULT: all                                                                 #
+#------------------------------------------------------------------------------#
+inet_protocols = {{ POSTFIX_INET_PROTOCOLS }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_INET_INTERFACES                                                      #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#inet_interfaces           #
+# DEFAULT: all                                                                 #
+#------------------------------------------------------------------------------#
+inet_interfaces = {{ POSTFIX_INET_INTERFACES }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX SMTPD TLS SETTING                                                    #
+#------------------------------------------------------------------------------#
+# SSL key, certificate, CA for incoming connections                            #
+#------------------------------------------------------------------------------#
+
+smtpd_use_tls = yes
+smtpd_tls_key_file = {{ POSTFIX_SSL_KEY_FILE }}
+smtpd_tls_cert_file = {{ POSTFIX_SSL_CERT_FILE }}
+smtpd_tls_CAfile = {{ POSTFIX_SSL_CACERT_FILE }}
+smtpd_tls_CApath = {{ POSTFIX_SSL_CERT_DIR }}
+smtpd_tls_session_cache_database = btree:{{ POSTFIX_DATA_DIRECTORY }}/smtpd_scache
+
+#------------------------------------------------------------------------------#
+# DISABLE SSLv2, SSLv3                                                         #
+#------------------------------------------------------------------------------#
+
+smtpd_tls_protocols = {{ POSTFIX_SMTPD_TLS_PROTOCOLS }}
+smtpd_tls_mandatory_protocols = {{ POSTFIX_SMTPD_TLS_MANDATORY_PROTOCOLS }}
+smtp_tls_protocols = {{ POSTFIX_SMTPD_TLS_PROTOCOLS }}
+smtp_tls_mandatory_protocols = {{ POSTFIX_SMTP_TLS_MANDATORY_PROTOCOLS }}
+lmtp_tls_protocols = {{ POSTFIX_LMTP_TLS_MANDATORY_PROTOCOLS }}
+lmtp_tls_mandatory_protocols = {{ POSTFIX_LMTP_TLS_MANDATORY_PROTOCOLS }}
+smtp_tls_session_cache_database = btree:{{ POSTFIX_DATA_DIRECTORY }}/smtp_scache
+#------------------------------------------------------------------------------#
+# FIXING LOGJAM ATTACK                                                         #
+#------------------------------------------------------------------------------#
+# LEARN MORE: https://weakdh.org                                               #
+#------------------------------------------------------------------------------#
+smtpd_tls_exclude_ciphers = {{ POSTFIX_SMTPD_TLS_EXCLUDE_CIPHERS }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_TLS_DH1024_PARAM_FILE                                          #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_tls_dh1024_param_file
+#------------------------------------------------------------------------------#
+smtpd_tls_dh1024_param_file = {{ POSTFIX_SMTPD_TLS_DH1024_PARAM_FILE }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_TLS_EECDH_GRADE                                                #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_tls_eecdh_grade     #
+# DEFAULT: See "postconf -d smtpd_tls_eecdh_grade" output                      #
+#------------------------------------------------------------------------------#
+smtpd_tls_eecdh_grade = {{ POSTFIX_SMTPD_TLS_EECDH_GRADE }}
+
+#------------------------------------------------------------------------------#
+# LOG ONLY A SUMMARY MESSAGE                                                   #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtp_tls_loglevel         #
+#             http://www.postfix.org/postconf.5.html#smtpd_tls_loglevel        #                               #
+#------------------------------------------------------------------------------#
+smtp_tls_loglevel = {{ POSTFIX_SMTP_TLS_LOGLEVEL}}
+smtpd_tls_loglevel = {{ POSTFIX_SMTPD_TLS_LOGLEVEL }}
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_SECURITY_LEVEL                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_tls_security_level  #
+# DEFAULT: empty                                                               #
+#------------------------------------------------------------------------------#
+smtpd_tls_security_level = {{ POSTFIX_SMTP_TLS_SECURITY_LEVEL }}
+tls_preempt_cipherlist = {{ POSTFIX_TLS_PREEMPT_CIPHERLIST }}
+tls_ssl_options = {{ POSTFIX_TLS_SSL_OPTIONS }}
+smtpd_tls_mandatory_ciphers = {{ POSTFIX_SMTPD_TLS_MANDATORY_CIPHERS }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_TLS_RECIEVED_HEADER                                            #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_tls_received_header #
+# DEFAULT: no                                                                  #
+#------------------------------------------------------------------------------#
+smtpd_tls_received_header = {{ POSTFIX_SMTPD_TLS_RECIEVED_HEADER }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTP_TLS_SECURITY_LEVEL                                              #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+#   - http://www.postfix.org/TLS_README.html#client_tls_may                    #
+#   - http://www.postfix.org/postconf.5.html#smtp_tls_security_level           #
+# DEFAULT: empty                                                               #
+#------------------------------------------------------------------------------#
+smtp_tls_security_level = {{ POSTFIX_SMTP_TLS_SECURITY_LEVEL }}
+
+#------------------------------------------------------------------------------#
+# Use the same CA file as smtpd.                                               #
+#------------------------------------------------------------------------------#
+smtp_tls_CApath = {{ POSTFIX_SSL_CERT_DIR  }}
+smtp_tls_CAfile = {{ POSTFIX_SSL_CACERT_FILE }}
+smtp_tls_cert_file = {{ POSTFIX_SSL_CERT_FILE }}
+smtp_tls_key_file = {{ POSTFIX_SSL_KEY_FILE }}
+smtp_tls_note_starttls_offer = {{ POSTFIX_SMTP_TLS_NOTE_STARTTLS_OFFER }}
+
+
+################################################################################
+# POSTFIX_POSTSCREEN_PROTECTION                                                #
+################################################################################
+# The Postfix postscreen(8) daemon provides additional protection against      #
+# mail server overload                                                         #
+################################################################################
+
+#------------------------------------------------------------------------------#
+# POSTFIX_POSTSCREEN_ACCESS_LIST                                               #
+#------------------------------------------------------------------------------#
+# Permanent white/blacklist for remote SMTP client IP addresses.               #
+# postscreen(8) searches this list immediately after a remote SMTP             #
+# client connects. The search stops upon the first command that fires          #
+# for the client IP address.                                                   #
+#------------------------------------------------------------------------------#
+postscreen_access_list =
+    permit_mynetworks
+    cidr:{{ POSTSCREEN_ACCESS_LIST_CIDR_FILE }}
+    tcp:127.0.0.1:10027
+
+#------------------------------------------------------------------------------#
+# POSTFIX_POSTSCREEN_BARE_NEWLINE_ENABLE
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#postscreen_bare_newline_enable        #
+# DEFAULT: no                                                                  #
+#------------------------------------------------------------------------------#
+postscreen_bare_newline_enable = {{ POSTFIX_POSTSCREEN_BARE_NEWLINE_ENABLE }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_POSTSCREEN_BLACKLIST_ACTION                                          #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#postscreen_blacklist_action           #
+# DEFAULT: ignore                                                              #
+#------------------------------------------------------------------------------#
+postscreen_blacklist_action = {{ POSTFIX_POSTSCREEN_BLACKLIST_ACTION }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_POSTSCREEN_CACHE_CLEANUP_INTERVAL                                    #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#postscreen_cache_cleanup_interval     #
+# DEFAULT: 12h
+#------------------------------------------------------------------------------#
+postscreen_cache_cleanup_interval = {{ POSTFIX_POSTSCREEN_CACHE_CLEANUP_INTERVAL }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_POSTSCREEN_CACHE_MAP                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#postscreen_cache_map                  #
+# DEFAULT: btree                                                               #
+#------------------------------------------------------------------------------#
+postscreen_cache_map = proxy:btree:{{ POSTFIX_DATA_DIRECTORY }}/postscreen_cache
+
+#------------------------------------------------------------------------------#
+# POSTFIX_POSTSCREEN_DNSBL_ACTION                                              #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#postscreen_dnsbl_action               #
+# DEFAULT: ignore                                                              #
+#------------------------------------------------------------------------------#
+postscreen_dnsbl_action = {{ POSTFIX_POSTSCREEN_DNSBL_ACTION }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_POSTSCREEN_DNSBL_SITES                                               #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#postscreen_dnsbl_sites                #
+#------------------------------------------------------------------------------#
+postscreen_dnsbl_sites =
+    b.barracudacentral.org=127.0.0.2*7
+    dnsbl.inps.de=127.0.0.2*7
+    bl.mailspike.net=127.0.0.2*5
+    bl.mailspike.net=127.0.0.[10;11;12]*4
+    dnsbl.sorbs.net=127.0.0.10*8
+    dnsbl.sorbs.net=127.0.0.5*6
+    dnsbl.sorbs.net=127.0.0.7*3
+    dnsbl.sorbs.net=127.0.0.8*2
+    dnsbl.sorbs.net=127.0.0.6*2
+    dnsbl.sorbs.net=127.0.0.9*2
+    zen.spamhaus.org=127.0.0.[10;11]*8
+    zen.spamhaus.org=127.0.0.[4..7]*6
+    zen.spamhaus.org=127.0.0.3*4
+    zen.spamhaus.org=127.0.0.2*3
+    hostkarma.junkemailfilter.com=127.0.0.2*3
+    hostkarma.junkemailfilter.com=127.0.0.4*1
+    hostkarma.junkemailfilter.com=127.0.1.2*1
+    wl.mailspike.net=127.0.0.[18;19;20]*-2
+    hostkarma.junkemailfilter.com=127.0.0.1*-2
+
+postscreen_dnsbl_threshold = {{ POSTFIX_POSTSCREEN_DNSBL_THRESHOLD }}
+postscreen_dnsbl_ttl = {{ POSTFIX_POSTSCREEN_DNSBL_TTL }}
+postscreen_greet_action = {{ POSTFIX_POSTSCREEN_GREET_ACTION }}
+postscreen_greet_banner = {{ POSTFIX_POSTSCREEN_GREET_BANNER }}
+postscreen_greet_ttl = {{ POSTFIX_POSTSCREEN_GREET_TTL }}
+postscreen_greet_wait = {{ POSTFIX_POSTSCREEN_GREET_WAIT }}
+postscreen_non_smtp_command_enable = {{ POSTFIX_POSTSCREEN_NON_SMTP_COMMAND_ENABLE }}
+postscreen_pipelining_enable = {{ POSTFIX_POSTSCREEN_PIPELINING_ENABLE }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_ENABLE_LONG_QUEUE                                                    #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#enable_long_queue_ids     #
+# DEFAULT: no                                                                  #
+#------------------------------------------------------------------------------#
+enable_long_queue_ids = {{ POSTFIX_ENABLE_LONG_QUEUE }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_REJECT_UNLISTED_RECIPIENT                                      #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#smtpd_reject_unlisted_recipient       #
+# DEFAULT: yes                                                                 #
+#------------------------------------------------------------------------------#
+smtpd_reject_unlisted_recipient = {{ POSTFIX_SMTPD_REJECT_UNLISTED_RECIPIENT }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_REJECT_UNLISTED_SENDER                                         #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#smtpd_reject_unlisted_sender           #
+# DEFAULT: no                                                                  #
+#------------------------------------------------------------------------------#
+smtpd_reject_unlisted_sender = {{ POSTFIX_SMTPD_REJECT_UNLISTED_SENDER }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX HEADER AND BODY CHECK PCRE TABLE                                     #
+#------------------------------------------------------------------------------#
+#header_checks = pcre:{{ POSTFIX_HEADER_CHECKS_PCRE_FILE }}
+#body_checks = pcre:{{ POSTFIX_BODY_CHECKS_PCRE_FILE }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_COMMAND_FILTER                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_command_filter      #
+# DEFAULT: empty                                                               #
+#------------------------------------------------------------------------------#
+smtpd_command_filter = pcre:{{ POSTFIX_SMTPD_COMMAND_FILTER }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_HELLO_REQUIRED                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE:http://www.postfix.org/postconf.5.html#smtpd_helo_required        #
+# DEFAULT: no                                                                  #
+#------------------------------------------------------------------------------#
+smtpd_helo_required = {{ POSTFIX_SMTPD_HELLO_REQUIRED }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_HELLO_RESTRICTIONS                                             #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_helo_restrictions   #
+# DEFAULT: empty                                                               #
+#------------------------------------------------------------------------------#
+smtpd_helo_restrictions =
+    permit_mynetworks
+    permit_sasl_authenticated
+    check_helo_access pcre:{{ POSTFIX_FILE_HELO_ACCESS }}
+    reject_non_fqdn_helo_hostname
+    reject_unknown_helo_hostname
+
+smtpd_relay_restrictions =
+    permit_mynetworks
+    permit_sasl_authenticated
+    defer_unauth_destination
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_SENDER_RESTRICTIONS                                            #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_sender_restrictions #
+# DEFAULT : empty
+#------------------------------------------------------------------------------#
+smtpd_sender_restrictions =
+    reject_unknown_sender_domain
+    reject_non_fqdn_sender
+    reject_unlisted_sender
+    permit_mynetworks
+    permit_sasl_authenticated
+    check_sender_access pcre:{{ POSTFIX_FILE_SENDER_ACCESS }}
+
+smtpd_soft_error_limit = {{ POSTFIX_SMTPD_SOFT_ERROR_LIMIT }}
+smtpd_tls_auth_only = {{ POSTFIX_SMTPD_TLS_AUTH_ONLY }}
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS                                         #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions          #
+# DEFAULT : see "postconf -d" output                                           #
+#------------------------------------------------------------------------------#
+smtpd_recipient_restrictions =
+    reject_non_fqdn_recipient
+    reject_unlisted_recipient
+    permit_mynetworks
+    check_recipient_access proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/tls_enforce_in_policy.cf
+    permit_sasl_authenticated
+    reject_unauth_destination
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_END_OF_DATA_RESTRICTIONS                                       #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#smtpd_end_of_data_restrictions        #
+# DEFAULT : empty                                                              #
+#------------------------------------------------------------------------------#
+smtpd_end_of_data_restrictions = {{ POSTFIX_SMTPD_END_OF_DATA_RESTRICTIONS }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_DATA_RESTRICTIONS                                              #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_data_restrictions   #
+# DEFAULT : empty                                                              #
+#------------------------------------------------------------------------------#
+smtpd_data_restrictions = {{ POSTFIX_SMTPD_DATA_RESTRICTIONS }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_RECIPIENT_CANONICAL_MAPS                                             #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#recipient_canonical_maps
+#------------------------------------------------------------------------------#
+recipient_canonical_maps = proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/recipient_canonical_maps.cf
+recipient_canonical_classes = {{ POSTFIX_RECIPIENT_CANONICAL_CLASSES }}
+
+proxy_read_maps =
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_sender_acl.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/tls_policy_override_maps.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/sender_dependent_default_transport_maps.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/transport_maps.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/sender_dependent_sasl_passwd_maps.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/sasl_passwd_maps_transport_maps.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/tls_enforce_in_policy.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/sender_bcc_maps.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/recipient_bcc_maps.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/recipient_canonical_maps.cf
+    $local_recipient_maps
+    $mydestination
+    $virtual_alias_maps
+    $virtual_alias_domains
+    $virtual_mailbox_maps
+    $virtual_mailbox_domains
+    $relay_recipient_maps
+    $relay_domains
+    $canonical_maps
+    $sender_canonical_maps
+    $recipient_canonical_maps
+    $relocated_maps
+    $transport_maps
+    $mynetworks
+    $smtpd_sender_login_maps
+
+#------------------------------------------------------------------------------#
+# POSTFIX_ENABLE_ORIGINAL_RECIPIENT                                            #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#enable_original_recipient #
+#------------------------------------------------------------------------------#
+enable_original_recipient = no {{ POSTFIX_ENABLE_ORIGINAL_RECIPIENT }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_VIRTUAL_MIN_UID                                                      #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#virtual_minimum_uid       #
+#------------------------------------------------------------------------------#
+virtual_minimum_uid = {{ POSTFIX_VIRTUAL_MIN_UID }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_VIRTUAL_UID_MAPS
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#virtual_uid_maps          #
+#------------------------------------------------------------------------------#
+virtual_uid_maps = static:{{ POSTFIX_VIRTUAL_UID_MAPS }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_VIRTUAL_GID_MAPS
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#virtual_gid_maps          #
+#------------------------------------------------------------------------------#
+virtual_gid_maps = static:{{ POSTFIX_VIRTUAL_GID_MAPS }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_VIRTUAL_MAILBOX_BASE                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#virtual_mailbox_base      #
+#------------------------------------------------------------------------------#
+virtual_mailbox_base = {{ POSTFIX_VIRTUAL_MAILBOX_BASE }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTP_SASL_AUTH_ENABLE                                                #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtp_sasl_auth_enable     #
+#------------------------------------------------------------------------------#
+smtp_sasl_auth_enable = {{ POSTFIX_SMTP_SASL_AUTH_ENABLE }}
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTP_SASL_AUTH_SOFT_BOUNCE                                           #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtp_sasl_auth_soft_bounce#
+#------------------------------------------------------------------------------#
+smtp_sasl_auth_soft_bounce = {{ POSTFIX_SMTP_SASL_AUTH_SOFT_BOUNCE }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTP_SASL_SECURITY_OPTIONS                                           #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtp_sasl_security_options#
+#------------------------------------------------------------------------------#
+smtp_sasl_security_options = {{ POSTFIX_SMTP_SASL_SECURITY_OPTIONS }}
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTP_SASL_MECHANISM_FILTER                                           #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtp_sasl_mechanism_filter#
+#------------------------------------------------------------------------------#
+smtp_sasl_mechanism_filter = {{ POSTFIX_SMTP_SASL_MECHANISM_FILTER }}
+
+################################################################################
+#                LOOKUP VIRTUAL MAIL ACCOUNTS IN MARIADB                       #
+################################################################################
+
+#------------------------------------------------------------------------------#
+# POSTFIX_TRANSPORT_MAPS                                                       #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#transport_maps            #
+#------------------------------------------------------------------------------#
+transport_maps =
+    pcre:{{ POSTFIX_ROOTDIR }}/local_transport.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/transport_maps.cf
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SENDER_DEPENDENT_RELAYHOST_MAPS                                      #
+#------------------------------------------------------------------------------#
+# LEARN MORE:                                                                  #
+# http://www.postfix.org/postconf.5.html#sender_dependent_relayhost_maps       #
+#------------------------------------------------------------------------------#
+sender_dependent_relayhost_maps =
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/sender_dependent_transport_maps.cf
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTPD_SENDER_LOGIN_MAPS                                              #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_sender_login_maps   #
+#------------------------------------------------------------------------------#
+smtpd_sender_login_maps =
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_sender_acl.cf
+
+#------------------------------------------------------------------------------#
+# POSTFIX_VIRTUAL_MAILBOX_DOMAINS                                              #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#virtual_mailbox_domains   #
+#------------------------------------------------------------------------------#
+virtual_mailbox_domains =
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_mailbox_domains.cf
+
+#------------------------------------------------------------------------------#
+# POSTFIX_RELAY_DOMAINS                                                        #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#relay_domains             #
+#------------------------------------------------------------------------------#
+relay_domains =
+    $mydestination
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_relay_domain_maps.cf
+
+#------------------------------------------------------------------------------#
+# POSTFIX_VIRTUAL_MAILBOX_MAPS                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#virtual_mailbox_maps      #
+#------------------------------------------------------------------------------#
+virtual_mailbox_maps =
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_mailbox_maps.cf
+
+#------------------------------------------------------------------------------#
+# POSTFIX_VIRTUAL_ALIAS_MAPS                                                   #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#virtual_alias_maps        #
+#------------------------------------------------------------------------------#
+virtual_alias_maps =
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_alias_maps.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_alias_domain_maps.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_spamalias_maps.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_alias_domain_catchall_maps.cf
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SENDER_BCC_MAPS                                                      #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#sender_bcc_maps           #
+#------------------------------------------------------------------------------#
+sender_bcc_maps =
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/sender_bcc_maps.cf
+
+#------------------------------------------------------------------------------#
+# POSTFIX_RECIPIENT_BCC_MAPS                                                   #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#recipient_bcc_maps        #
+#------------------------------------------------------------------------------#
+recipient_bcc_maps =
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/recipient_bcc_maps.cf
+
+#------------------------------------------------------------------------------#
+# POSTFIX_CANONICAL_MAPS                                                       #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#recipient_canonical_maps  #
+#------------------------------------------------------------------------------#
+recipient_canonical_maps =
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/recipient_canonical_maps.cf
+
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTP_TLS_POLICY_MAPS                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtp_tls_policy_maps      #
+#------------------------------------------------------------------------------#
+smtp_tls_policy_maps =
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/tls_policy_override_maps.cf
+
+smtp_header_checks = pcre:{{ POSTFIX_SMTP_HEADER_CHECKS_PCRE_FILE }}
+#------------------------------------------------------------------------------#
+# POSTFIX_SMTP_SASL_PASSWORD_MAPS                                              #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#smtp_sasl_password_maps   #
+#------------------------------------------------------------------------------#
+smtp_sasl_password_maps =
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/sender_dependent_sasl_passwd_maps.cf
+
+################################################################################
+#                        DOVECOT SASL SUPPORT                                  #
+################################################################################
+
+smtpd_sasl_auth_enable = {{ POSTFIX_SMTPD_SASL_AUTH_ENABLE }}
+smtpd_sasl_authenticated_header = {{ POSTFIX_SMTPD_SASL_AUTHENTICATED_HEADER }}
+smtpd_sasl_path = {{ DOVECOT_SASL_AUTH_SOCKET }}
+virtual_transport = {{ POSTFIX_VIRTUAL_TRANSPORT }}
+smtpd_sasl_type = {{ POSTFIX_SASL_TYPE }}
+broken_sasl_auth_clients = {{ POSTFIX_BROKEN_SASL_AUTH_CLIENTS }}
+
+################################################################################
+#                             RSPAMD MILTERS                                   #
+################################################################################
+#------------------------------------------------------------------------------#
+# NOTE: Rspamd will take care of DKIM/DMARC and CLAMAV                         #
+#------------------------------------------------------------------------------#
+smtpd_milters = {{ POSTFIX_SMTPD_MILTER_RSPAMD_SOCKET }}
+non_smtpd_milters = {{ POSTFIX_SMTPD_MILTER_RSPAMD_SOCKET }}
+milter_mail_macros = {{ POSTFIX_MILTER_MAIL_MACROS }}
+
+################################################################################
+#                                   ZEYPLE                                     #
+################################################################################
+#------------------------------------------------------------------------------#
+# NOTE: Zeyple automatically encrypts outgoing emails with GPG:                #
+#------------------------------------------------------------------------------#
+
+# content_filter= {{ POSTFIX_CONTENT_FILTER }}
+#   Prefere IPv4, useful for v4-only envs

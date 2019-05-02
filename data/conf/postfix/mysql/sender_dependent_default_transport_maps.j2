@@ -1,0 +1,32 @@
+#############################################
+## POSTFIX SENDER DEPENDENT TRANSPORT MAPS ##
+#############################################
+
+hosts       = {{ OE_SQL_SERVER_HOST }}:{{ OE_SQL_SERVER_PORT }}
+user        = {{ OE_DB_BIND_USER }}
+password    = {{ OE_DB_BIND_PASSWD }}
+dbname      = {{ OE_DB_NAME }}
+query       = SELECT GROUP_CONCAT(transport SEPARATOR '') AS transport_maps
+              FROM (
+                SELECT IF(EXISTS(SELECT 'smtp_type' FROM alias
+                  LEFT OUTER JOIN mailbox ON mailbox.username = alias.goto
+                  WHERE (address = '%s'
+                  OR address IN (
+                     SELECT CONCAT('%u', '@', target_domain) FROM alias_domain
+                     WHERE alias_domain = '%d'
+                   )
+                )
+                AND json_extract(attributes, '$.tls_enforce_out') LIKE '%%1%%'
+                AND mailbox.active = '1'
+              ), 'smtp_enforced_tls:', 'smtp:') AS 'transport'
+              UNION ALL
+              SELECT hostname AS transport FROM relayhosts
+              LEFT OUTER JOIN domain ON domain.relayhost = relayhosts.id
+              WHERE relayhosts.active = '1'
+              AND domain = '%d'
+              OR domain IN (
+                   SELECT target_domain FROM alias_domain
+                   WHERE alias_domain = '%d'
+                 )
+              )
+              AS transport_view;

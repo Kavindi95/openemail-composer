@@ -40,21 +40,21 @@ smtp_header_checks = pcre:/opt/postfix/conf/anonymize_headers.pcre
 # The Postfix postscreen(8) daemon provides additional protection against mail server overload.
 # --------------------------------------------------------------------------------------------
 
-postscreen_access_list = permit_mynetworks, 
-  cidr:/opt/postfix/conf/postscreen_access.cidr, 
+postscreen_access_list = permit_mynetworks,
+  cidr:/opt/postfix/conf/postscreen_access.cidr,
   tcp:127.0.0.1:10027
 postscreen_bare_newline_enable = no
 postscreen_blacklist_action = drop
 postscreen_cache_cleanup_interval = 24h
 postscreen_cache_map = proxy:btree:$data_directory/postscreen_cache
 postscreen_dnsbl_action = enforce
-postscreen_dnsbl_sites = b.barracudacentral.org=127.0.0.2*7 
-  dnsbl.inps.de=127.0.0.2*7 
-  bl.mailspike.net=127.0.0.2*5 
-  bl.mailspike.net=127.0.0.[10;11;12]*4 
-  dnsbl.sorbs.net=127.0.0.10*8 
-  dnsbl.sorbs.net=127.0.0.5*6 
-  dnsbl.sorbs.net=127.0.0.7*3 
+postscreen_dnsbl_sites = b.barracudacentral.org=127.0.0.2*7
+  dnsbl.inps.de=127.0.0.2*7
+  bl.mailspike.net=127.0.0.2*5
+  bl.mailspike.net=127.0.0.[10;11;12]*4
+  dnsbl.sorbs.net=127.0.0.10*8
+  dnsbl.sorbs.net=127.0.0.5*6
+  dnsbl.sorbs.net=127.0.0.7*3
   dnsbl.sorbs.net=127.0.0.8*2
   dnsbl.sorbs.net=127.0.0.6*2
   dnsbl.sorbs.net=127.0.0.9*2
@@ -83,20 +83,14 @@ postscreen_pipelining_enable = no
 smtpd_relay_restrictions = permit_mynetworks,
   permit_sasl_authenticated,
   defer_unauth_destination
-smtpd_recipient_restrictions = permit_sasl_authenticated, 
-  permit_mynetworks, 
-  check_recipient_access proxy:mysql:/opt/postfix/conf/sql/mysql_tls_enforce_in_policy.cf, 
-  reject_invalid_helo_hostname, 
-  reject_unknown_reverse_client_hostname, 
-  reject_unauth_destination
-smtpd_data_restrictions = reject_unauth_pipelining, 
+smtpd_data_restrictions = reject_unauth_pipelining,
   permit
 smtpd_sender_login_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_sender_acl.cf,
   ldap:/opt/postfix/ldap/ldap-accounts.cf
-smtpd_sender_restrictions = reject_authenticated_sender_login_mismatch, 
-  permit_mynetworks, 
-  permit_sasl_authenticated, 
-  reject_unlisted_sender, 
+smtpd_sender_restrictions = reject_authenticated_sender_login_mismatch,
+  permit_mynetworks,
+  permit_sasl_authenticated,
+  reject_unlisted_sender,
   reject_unknown_sender_domain
 
 ####################
@@ -107,7 +101,7 @@ smtpd_sender_restrictions = reject_authenticated_sender_login_mismatch,
 # ----------------------------------------------------------------------
 
 smtp_tls_loglevel = 1
-smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt 
+smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
 smtp_tls_cert_file = /etc/ssl/mail/cert.pem
 smtp_tls_key_file = /etc/ssl/mail/key.pem
 smtp_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
@@ -123,7 +117,7 @@ smtpd_tls_loglevel = 1
 
 # TLS PUBLIC CERTIFICATES AND PRIVATE KEY
 
-smtpd_tls_CAfile = /etc/ssl/certs/ca-certificates.crt 
+smtpd_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
 smtpd_tls_cert_file = /etc/ssl/mail/cert.pem
 smtpd_tls_key_file = /etc/ssl/mail/key.pem
 smtpd_use_tls=yes
@@ -139,7 +133,7 @@ smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 
 smtpd_tls_dh1024_param_file = /etc/ssl/mail/dhparams.pem
 
-# CYPHERS 
+# CYPHERS
 
 tls_preempt_cipherlist = yes
 tls_ssl_options = NO_COMPRESSION
@@ -157,43 +151,19 @@ lmtp_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
 ## SASL PARAMETERS ##
 #####################
 
-# Incomming 
-# -------------------------------
-smtpd_sasl_auth_enable = yes
-smtpd_sasl_authenticated_header = yes
-smtpd_sasl_path = inet:dovecot:10001
-smtpd_sasl_type = dovecot
-broken_sasl_auth_clients = yes
 
 # Outgoing
 # -------------------------------
 
 smtp_sasl_auth_enable = yes
 smtp_sasl_auth_soft_bounce = no
-smtp_sasl_password_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_sasl_passwd_maps_sender_dependent.cf
-smtp_sasl_security_options = 
+smtp_sasl_security_options =
 smtp_sasl_mechanism_filter = plain, login
 
-##############################
-## VIRTUALS MAPS PARAMETERS ##
-##############################
-
-virtual_alias_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_maps.cf,
-  proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_spamalias_maps.cf,
-  proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_domain_maps.cf,
-  proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_alias_domain_catchall_maps.cf,
-  ldap:/opt/postfix/ldap/ldap-aliases.cf,
-  ldap:/opt/postfix/ldap/ldap-virtualforward.cf,
-  ldap:/opt/postfix/ldap/ldap-accountsmap.cf
 virtual_minimum_uid = 104
 virtual_uid_maps = static:5000
 virtual_gid_maps = static:5000
 virtual_mailbox_base = /var/vmail/
-virtual_mailbox_domains = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_domains_maps.cf,
-  ldap:/opt/postfix/ldap/ldap-domains.cf
-virtual_mailbox_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_mailbox_maps.cf,
-  ldap:/opt/postfix/ldap/ldap-accounts.cf
-virtual_transport = lmtp:inet:dovecot:24
 
 #################
 ## REALAY MAPS ##
@@ -208,7 +178,7 @@ sender_dependent_default_transport_maps = proxy:mysql:/opt/postfix/conf/sql/mysq
 ## PROXYMAP  ##
 ###############
 
-# The  proxymap(8)  server  provides read-only or read-write table lookup service to Postfix processes. 
+# The  proxymap(8)  server  provides read-only or read-write table lookup service to Postfix processes.
 # -----------------------------------------------------------------------------------------------------]
 
 proxy_read_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_sender_acl.cf,
@@ -248,7 +218,7 @@ proxy_read_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_virtual_sender_acl.cf,
 ## TRANSPORT MAPS ##
 ####################
 
-transport_maps = pcre:/opt/postfix/conf/local_transport, 
+transport_maps = pcre:/opt/postfix/conf/local_transport,
   proxy:mysql:/opt/postfix/conf/sql/mysql_transport_maps.cf,
   ldap:/opt/postfix/conf/ldap/ldap-transport.cf
 recipient_bcc_maps = proxy:mysql:/opt/postfix/conf/sql/mysql_recipient_bcc_maps.cf

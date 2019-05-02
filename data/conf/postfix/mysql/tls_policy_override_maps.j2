@@ -1,0 +1,12 @@
+################################################################################
+#                     POSTFIX TLS POLICY OVERRIDE MAPS                        #
+###############################################################################
+
+hosts       = {{ OE_SQL_SERVER_HOST }}:{{ OE_SQL_SERVER_PORT }}
+user        = {{ OE_DB_BIND_USER }}
+password    = {{ OE_DB_BIND_PASSWD }}
+dbname      = {{ OE_DB_NAME }}
+query       = SELECT CONCAT(policy, ' ', parameters) AS tls_policy
+              FROM tls_policy_override WHERE active = '1' AND dest = '%s'
+
+# %s - represents the email addres

@@ -2,14 +2,23 @@
 
 set -o pipefail
 
+################################################################################
+# INSTALL ADDITIONAL TOOLS IN BUSYBOX BASED CONTAINER HOSTS                    #
+################################################################################
+
 if grep --help 2>&1 | grep -q -i "busybox"; then
   echo "BusybBox grep detected, please install gnu grep, \"apk add --no-cache --upgrade grep\""
   exit 1
 fi
+
 if cp --help 2>&1 | grep -q -i "busybox"; then
   echo "BusybBox cp detected, please install coreutils, \"apk add --no-cache --upgrade coreutils\""
   exit 1
 fi
+
+################################################################################
+# OPENEMAIL CONF CREATION                                                      #
+################################################################################
 
 if [ -f openemail.conf ]; then
   read -r -p "A config file exists and will be overwritten, are you sure you want to contine? [y/N] " response
@@ -24,6 +33,10 @@ if [ -f openemail.conf ]; then
   esac
 fi
 
+################################################################################
+# DEFINE OPENEMAIL_HOSTNAME FROM FQDN HOSTNAME ONLY                            #
+################################################################################
+
 echo "Press enter to confirm the detected value '[value]' where applicable or enter a custom value."
 while [ -z "${OPENEMAIL_HOSTNAME}" ]; do
   read -p "Hostname (FQDN): " -e OPENEMAIL_HOSTNAME
@@ -33,6 +46,10 @@ while [ -z "${OPENEMAIL_HOSTNAME}" ]; do
     OPENEMAIL_HOSTNAME=
   fi
 done
+
+################################################################################
+# SETUP OPENEMAIL TIME ZONE                                                    #
+################################################################################
 
 if [ -a /etc/timezone ]; then
   DETECTED_TZ=$(cat /etc/timezone)
@@ -49,7 +66,15 @@ while [ -z "${OPENEMAIL_TZ}" ]; do
   fi
 done
 
+################################################################################
+# CALCULATE THE TOTAL MEMORY OF THE DOCKER HOST                                #
+################################################################################
+
 MEM_TOTAL=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
+
+################################################################################
+# SKIP CLAMD CONTAINER IN LOW MEMORY SYSTEMS                                   #
+################################################################################
 
 if [ ${MEM_TOTAL} -le "2621440" ]; then
   echo "Installed memory is <= 2.5 GiB. It is recommended to disable ClamAV to prevent out-of-memory situations."
@@ -66,6 +91,10 @@ if [ ${MEM_TOTAL} -le "2621440" ]; then
 else
   SKIP_CLAMD=n
 fi
+
+################################################################################
+# DISABLE SOLR CONTAINER IN LOW MEMORY SYSTEMS                                 #
+################################################################################
 
 if [ ${MEM_TOTAL} -le "2097152" ]; then
   echo "Disabling Solr on low-memory system."
@@ -87,66 +116,80 @@ else
   SKIP_SOLR=n
 fi
 
-[ ! -f ./data/conf/rspamd/override.d/worker-controller-password.inc ] && echo '# Placeholder' > ./data/conf/rspamd/override.d/worker-controller-password.inc
+[ ! -f ./data/conf/rspamd/override.d/worker-controller-password.inc ] \
+&& echo '# Placeholder' > ./data/conf/rspamd/override.d/worker-controller-password.inc
 
-HOSTNAME=${OPENEMAIL_HOSTNAME}
-DOMAIN=$(hostname -d)
-SLD=$(echo $(hostname -d) | cut -f1 -d .)
-TLD=$(echo $(hostname -d) | cut -f2 -d .)
-BASE_DN=dc=$(echo ${SLD}),dc=$(echo ${TLD})
-LDAP1=ldap1.${DOMAIN}
-LDAP2=ldap2.${DOMAIN}
+################################################################################
+#  SOME CONTAINERS ARE USING PUID AND GUID                                     #
+################################################################################
+
 PUID=$(id -u)
 PGID=$(id -g)
-ADMINPASS=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+
+################################################################################
+#  GERNERATE DB USER PASSWORDS                                                 #
+################################################################################
+
+OE_DB_USER_PASSWD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+OE_DB_ROOT_PASSWD=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+
+################################################################################
+#  GERNERATE OPENEMAIL CONF                                                    #
+################################################################################
 
 cat << EOF > openemail.conf
-# ------------------------------
-# openemail web ui configuration
-# ------------------------------
-# example.org is _not_ a valid hostname, use a fqdn here.
-# Default admin user is "admin"
-# Default password is "moohoo"
+
+################################################################################
+#   OPENEMAIL WEB UI CONFIGURATIONS                                            #
+################################################################################
+
+##----------------------------------------------------------------------------##
+##  OPENEMAIL FQQN                                                            ##
+##----------------------------------------------------------------------------##
+##  NOTE:                                                                     ##
+##  Please note that "example.org" is not a valid hostname,                   ##
+##  You should use a FQDN like "mai.example.org" here.                        ##
+##----------------------------------------------------------------------------##
+
+##----------------------------------------------------------------------------##
+##  OPENEMAIL GLOBAL ADMIN USER                                               ##
+##----------------------------------------------------------------------------##
+##  Default admin user is "admin"                                             ##
+##  Default password is "openemail"                                           ##
+##----------------------------------------------------------------------------##
 
 OPENEMAIL_HOSTNAME=${OPENEMAIL_HOSTNAME}
 
 PUID=${PUID}
 PGID=${PGID}
 
-# The following variables to used by Letsencrypt proxy
+##----------------------------------------------------------------------------##
+## SQL DATABASE CONFIGURATION                                                 ##
+##----------------------------------------------------------------------------##
 
-SUBDOMAINS=dev,fd,nc,admin 
-EXTRA_DOMAINS=
-# ------------------------------
-# SQL database configuration
-# ------------------------------
-
+DBPASS=${OE_DB_USER_PASSWD}
+DBROOT=${OE_DB_ROOT_PASSWD}
 DBNAME=openemail
 DBUSER=openemail
 
-# Please use long, random alphanumeric strings (A-Za-z0-9)
-
-DBPASS=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
-DBROOT=$(LC_ALL=C </dev/urandom tr -dc A-Za-z0-9 | head -c 28)
-
-# ------------------------------
-# HTTP/S Bindings
-# ------------------------------
-
-# You should use HTTPS, but in case of SSL offloaded reverse proxies:
+##----------------------------------------------------------------------------##
+##  HTTP/S BINDINGS                                                           ##
+##----------------------------------------------------------------------------##
+##  While you should use HTTPS, you can skip                                  ##
+##  in case of a SSL offloaded reverse proxy                                  ##
+##  Do not_use IP:PORT in HTTP(S)_BIND or HTTP(S)_PORT                        ##
+##----------------------------------------------------------------------------##
 
 HTTP_PORT=80
 HTTP_BIND=0.0.0.0
-
 HTTPS_PORT=443
 HTTPS_BIND=0.0.0.0
 
-# ------------------------------
-# Other bindings
-# ------------------------------
-# You should leave that alone
-# Format: 11.22.33.44:25 or 0.0.0.0:465 etc.
-# Do _not_ use IP:PORT in HTTP(S)_BIND or HTTP(S)_PORT
+##----------------------------------------------------------------------------##
+##  OTHER IP:PORT BINDINGS                                                    ##
+##----------------------------------------------------------------------------##
+##  Binding format: IPV4:PORT or 0.0.0.0:PORT                                 ##
+##----------------------------------------------------------------------------##
 
 SMTP_PORT=25
 SMTPS_PORT=465
@@ -159,120 +202,213 @@ SIEVE_PORT=4190
 DOVEADM_PORT=127.0.0.1:19991
 SQL_PORT=127.0.0.1:13306
 
-# Your timezone
+##----------------------------------------------------------------------------##
+## SET OPENEMAIL TIMEZONE                                                     ##
+##----------------------------------------------------------------------------##
 
 TZ=${OPENEMAIL_TZ}
 
-# Fixed project name
+##----------------------------------------------------------------------------##
+##  OPENEMAIL COMPOSE FIXED PROJECT NAME                                      ##
+##----------------------------------------------------------------------------##
 
 COMPOSE_PROJECT_NAME=openemail
 
-# Set this to "allow" to enable the anyone pseudo user. Disabled by default.
-# When enabled, ACL can be created, that apply to "All authenticated users"
-# This should probably only be activated on mail hosts, that are used exclusivly by one organisation.
-# Otherwise a user might share data with too many other users.
+##----------------------------------------------------------------------------##
+##  DISALLOW ACL FOR ANY USER                                                 ##
+##----------------------------------------------------------------------------##
+##  Set this to "allow" to enable the anyone pseudo user. Disabled by default.##
+##  When enabled, ACL can be created, that apply to "All authenticated users" ##
+##  This should probably only be activated on mail hosts, that are used       ##
+##  exclusivly by one organisation. Otherwise a user might share data  with   ##
+##  with too many other users.                                                ##
+##----------------------------------------------------------------------------##
+
 ACL_ANYONE=disallow
 
-# Garbage collector cleanup
-# Deleted domains and mailboxes are moved to /var/vmail/_garbage/timestamp_sanitizedstring
-# How long should objects remain in the garbage until they are being deleted? (value in minutes)
-# Check interval is hourly
+##----------------------------------------------------------------------------##
+##  GARBAGE COLLECTOR CLEANUP TIMER                                           ##
+##----------------------------------------------------------------------------##
+##  Deleted domains and mailboxes are moved to                                ##
+##  /var/vmail/_garbage/timestamp_sanitizedstring                             ##
+##  How long should objects remain in the garbage                             ##
+##  until they are being deleted? (value in minutes)                          ##
+##  Check interval is hourly                                                  ##
+##----------------------------------------------------------------------------##
 
 MAILDIR_GC_TIME=1440
 
-# Skip ClamAV (clamd-openemail) anti-virus (Rspamd will auto-detect a missing ClamAV container) - y/n
+##----------------------------------------------------------------------------##
+##  SETUP ADDITIONAL SANS FOR LETSENCRYPT CERTIFICATES                        ##
+##----------------------------------------------------------------------------##
+##  You can use wildcard records to create specific names for every domain    ##
+##  that you add to openemail. You can follow the example below.              ##
+##  Example: Add domains "example.com" and "example.net" to openemail.        ##
+##  Then change ADDITIONAL_SAN to a value like:                               ##
+##  ADDITIONAL_SAN=imap.*,smtp.*                                              ##
+##  This will expand the certificates to                                      ##
+##  "imap.example.com", "smtp.example.com", "imap.example.net",               ##
+##  "imap.example.net"                                                        ##
+##  Remember to add every domain you will add in the future.                  ##
+##  You can also just add static names like below,                            ##
+##  ADDITIONAL_SAN=srv1.example.net                                           ##
+##  or combine wildcard and static names like below.                          ##
+##  ADDITIONAL_SAN=imap.*,srv1.example.com                                    ##
+##----------------------------------------------------------------------------##
+
+##  OPENEMAIL COMPOSE FIXED PROJECT NAME                                      ##
+##----------------------------------------------------------------------------##
+ADDITIONAL_SAN=
+
+##  TO SKIP RUNNING ACME-OPENEMAIL CONTAINER
+##  Available options are: y/n
+
+SKIP_LETS_ENCRYPT=n
+
+## TO SKIP IPV4 CHECK IN ACME-OPENEMAIL CONTAINER
+##  Available options are: y/n
+
+SKIP_IP_CHECK=n
+
+##----------------------------------------------------------------------------##
+##  SKIP CLAMAV CONTAINER                                                     ##
+##----------------------------------------------------------------------------##
+##  Skip ClamAV (clamd-openemail) anti-virus container.                       ##
+##  Rspamd will auto-detect a missing ClamAV container.                       ##
+##  Available options are: y/n                                                ##
+##----------------------------------------------------------------------------##
 
 SKIP_CLAMD=${SKIP_CLAMD}
 
-# Skip Solr on low-memory systems or if you do not want to store a readable index of your mails in solr-vol-1.
+##----------------------------------------------------------------------------##
+##  SKIP SOLR CONTAINER                                                       ##
+##----------------------------------------------------------------------------##
+##  OpenEMAIl uses Apache Solr container for mail discovery                   ##
+##  Skip Solr on low-memory systems or if you do not want                     ##
+##  to store a readable index of your mails in solr-vol-1.                    ##
+##----------------------------------------------------------------------------##
+
 SKIP_SOLR=${SKIP_SOLR}
 
-# Solr heap size in MB, there is no recommendation, please see Solr docs.
-# Solr is a prone to run OOM and should be monitored. Unmonitored Solr setups are not recommended.
+##----------------------------------------------------------------------------##
+##  SET SOLR HEAP SIZE                                                        ##
+##----------------------------------------------------------------------------##
+##  Solr heap size in MB, there is no recommendation,                         ##
+##  Please refer to the solr documentation for more details                   ##
+##  Solr is a prone to run OOM and should be monitored.                       ##
+##  Unmonitored Solr setups are not recommended.                              ##
+##----------------------------------------------------------------------------##
+
 SOLR_HEAP=1024
 
-# Enable watchdog (watchdog-openemail) to restart unhealthy containers (experimental)
+##----------------------------------------------------------------------------##
+##  ENABLE WATCHDOG CONTAINER                                                 ##
+##----------------------------------------------------------------------------##
+##  OpenEMAIl uses the watchdog-openemail container to                        ##
+##  to restart unhealthy containers. Send notifications by mail               ##
+##  mail wi DKIM signature, sent from watchdog@OPENEMAIL_HOSTNAME)            ##
+##  Can be used multiple recipents or single recipients.                      ##
+##----------------------------------------------------------------------------##
 
 USE_WATCHDOG=y
 
-# Send notifications by mail (no DKIM signature, sent from watchdog@OPENEMAIL_HOSTNAME)
-# Can by multiple rcpts, NO quotation marks
+# WATCHDOG_NOTIFYREPLICATION_HOSTS_EMAIL=a@example.com,b@example.com,c@example.com
 
-#WATCHDOG_NOTIFYREPLICATION_HOSTS_EMAIL=a@example.com,b@example.com,c@example.com
 WATCHDOG_NOTIFY_EMAIL=support@openemail.io
 
-# Max log lines per service to keep in Redis logs
+##----------------------------------------------------------------------------##
+##  SET MAX LOG LINES STORED IN REDIS                                         ##
+##----------------------------------------------------------------------------##
+##  Max log lines per service to keep in Redis logs                           ##
+##----------------------------------------------------------------------------##
 
 LOG_LINES=9999
 
-# Internal IPv4 /24 subnet, format n.n.n (expands to n.n.n.0/24)
+##----------------------------------------------------------------------------##
+##  SET OPENEMAIL INTERNAL IPV4 SUBNET                                        ##
+##----------------------------------------------------------------------------##
+## Internal IPv4/24 subnet, format n.n.n which expands to n.n.n.0/24)         ##
+##----------------------------------------------------------------------------##
 
 IPV4_NETWORKREPLICATION_HOSTS=172.22.1
 
-# Internal IPv6 subnet in fc00::/7
+##----------------------------------------------------------------------------##
+##  SET OPENEMAIL INTERNAL IPV6 SUBNET                                        ##
+##----------------------------------------------------------------------------##
+##  Internal IPv6 subnet in fc00::/7                                          ##
+##----------------------------------------------------------------------------##
 
 IPV6_NETWORK=fd4d:6169:6c63:6f77::/64
 
-# Use this IPv4 for outgoing connections (SNAT)
+##----------------------------------------------------------------------------##
+##  SET OPENEMAIL IPV4  OUTGOING SNAT                                         ##
+##----------------------------------------------------------------------------##
+##  Use the following  IPv4 for outgoing connections SNAT)                    ##
+##  Posible options are: y/n. Uncomment the varible to be used                ##
+##----------------------------------------------------------------------------##
 
-#SNAT_TO_SOURCE=
+# SNAT_TO_SOURCE=
 
-# Use this IPv6 for outgoing connections (SNAT)
+##----------------------------------------------------------------------------##
+##  SET OPENEMAIL IPV6  OUTGOING SNAT                                         ##
+##----------------------------------------------------------------------------##
+##  Use the following IPv6 for outgoing connections SNAT)                     ##
+##  Posible options are: y/n. Uncomment the varible to be used                ##
+##----------------------------------------------------------------------------##
 
 #SNAT6_TO_SOURCE=
 
-# Create or override API key for web uI
-# You _must_ define API_ALLOW_FROM, which is a comma separated list of IPs
-# API_KEY allowed chars: a-z, A-Z, 0-9, -
+##----------------------------------------------------------------------------##
+##  CREATE/OVERRIDE API KEY FOR WEB UI                                        ##
+##----------------------------------------------------------------------------##
+##  Use the following  IPv4 for outgoing connections SNAT)                    ##
+##  You _must_ define API_ALLOW_FROM, which is a comma separated list         ##
+##  of IPs. Uncomment the varible to be used                                  ##
+##----------------------------------------------------------------------------##
 
 #API_KEY=
 #API_ALLOW_FROM=127.0.0.1,1.2.3.4
 
-# OpenLDAP FusionDirectory Enviorenment Variables
-HOSTNAME=${OPENEMAIL_HOSTNAME}
-BACKEND=mdb
-LOG_LEVEL=256
-DOMAIN=${DOMAIN}
-ADMIN_PASS=${ADMINPASS}
-CONFIG_PASS=${ADMINPASS}
-FUSIONDIRECTORY_ADMIN_USER=fdadmin
-FUSIONDIRECTORY_ADMIN_PASS=${ADMINPASS}
-ORGANIZATION=(Openemail}
-BASE_DN=${BASE_DN}
-ENABLE_READONLY_USER=true
-READONLY_USER_USER=reader
-READONLY_USER_PASS={ADMINPASS}
-ENABLE_TLS=true
-TLS_CRT_FILENAME=fullchain.pem
-TLS_KEY_FILENAME=privkey.pem
-TLS_CA_CRT_FILENAME=fullchain.pem
-TLS_ENFORCE=false
-TLS_CIPHER_SUITE=ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256
-TLS_VERIFY_CLIENT=never
-SSL_HELPER_PREFIX=ldap
-ENABLE_REPLICATION=false
-REPLICATION_CONFIG_SYNCPROV=(binddn="cn=admin,cn=config"\ bindmethod=simple\ credentials="openemail"\ searchbase="cn=config"\ type=refreshAndPersist\ retry="60 +"\ timeout=1)
-REPLICATION_DB_SYNCPROV=(binddn="cn=admin,${BASE_DN}"\ bindmethod=simple\ credentials="admin"\ searchbase=${BASE_DN}\ type=refreshAndPersist\ interval=00:00:00:10\ retry="60 +"\ timeout=1)
-REPLICATION_HOSTS=(ldap://${LDAP1}\ ldap://${LDAP2})
-REMOVE_CONFIG_AFTER_SETUP=false
-
-# FusionDirectory Web UI Enviorenment Variables
-
-LDAP1_HOST=openldap-fusiondirectory
-LDAP1_BASE_DN=${BASE_DN}
-LDAP1_ADMIN_DN=cn=admin,${BASE_DN}
-LDAP1_ADMIN_PASS={ADMINPASS}
-LDAP1_NAME=Primary
-
-# Openemail Database Docker Container host
-DBHOST=mariadb
-
-
+## END of openemail.conf ##
 EOF
+
+################################################################################
+#  GERNERATE DB CONNECTOR.YAML                                                 #
+################################################################################
+
+mkdir -p data/env/common
+
+cat << EOF > data/env/common/mysql_db_connector.yaml
+OE_HOSTNAME: ${OPENEMAIL_HOSTNAME}
+OE_SQL_SERVER_HOST: mariadb-openemail
+OE_SQL_SERVER_PORT: 389
+OE_DB_BIND_USER: openemail
+OE_DB_BIND_PASSWD: ${OE_DB_USER_PASSWD}
+OE_DB_NAME: openemail
+EOF
+
+################################################################################
+#  GENERATE OPENLDAP_CONNECTOR.YAML                                            #
+################################################################################
+
+mkdir -p data/env/common
+
+cat << EOF > data/env/common/openldap_connector.yaml
+OE_HOSTNAME: ${OPENEMAIL_HOSTNAME}
+OE_LDAP_SERVER_HOST: openldap-openemail
+OE_LDAP_SERVER_PORT: 389
+OE_LDAP_BASE_DN: dc=openemail,dc=io
+OE_LDAP_BIND_PASSWD: {SSHA}8taSnDDEB0BVYu3CmF6E8OyDk6ogP/T8
+EOF
+
+##  CREATE A DIRTORY TO HOLD SSL CERTIFICATES
 
 mkdir -p data/assets/ssl
 
-# copy but don't overwrite existing certificate
+## COPY CERTIFICATES WIHTOUT OVERWRINTING EXISTING CERTIFICATES
+
 cp -n data/assets/ssl-example/*.pem data/assets/ssl/
+
+## CREATE A HARDLINK TO .ENV IN COMPOSE PROJECT DIRTORY
 
 ln ./openemail.conf ./.env

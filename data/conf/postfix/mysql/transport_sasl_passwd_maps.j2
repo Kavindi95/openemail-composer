@@ -1,0 +1,13 @@
+###########################################
+##  POSTFIX TRANSPORT SASL PASSWORD MAPS ##
+###########################################
+
+hosts       = {{ OE_SQL_SERVER_HOST }}:{{ OE_SQL_SERVER_PORT }}
+user        = {{ OE_DB_BIND_USER }}
+password    = {{ OE_DB_BIND_PASSWD }}
+dbname      = {{ OE_DB_NAME }}
+query       = SELECT CONCAT_WS(':', username, password) AS auth_data FROM transports
+              WHERE nexthop = '%s'
+              AND active = '1'
+              AND username != ''
+              LIMIT 1;

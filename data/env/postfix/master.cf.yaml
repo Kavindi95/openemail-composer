@@ -1,0 +1,37 @@
+SMTPD_SMTPD_HELO_RESTRICTIONS: 'permit_mynetworks,reject_non_fqdn_helo_hostname'
+SMTPD_SMTPD_SASL_AUTH_ENABLE: 'no'
+SMTPD_SMTPD_SENDER_RESTRICTIONS: 'permit_mynetworks,reject_unlisted_sender,reject_unknown_sender_domain'
+
+SMTPS_SMTPD_TLS_WRAPPERMODE: 'yes'
+SMTPS_SMTPD_CLIENT_RESTRICTIONS: 'permit_mynetworks,permit_sasl_authenticated,reject'
+SMTPS_SMTPD_TLS_MANDATORY_PROTOCOLS: '!SSLv2,!SSLv3'
+SMTPS_TLS_PREEMPT_CIPHERLIST: 'yes'
+
+SUBMISSION_SMTPD_CLIENT_RESTRICTIONS: 'permit_mynetworks,permit_sasl_authenticated,reject'
+SUBMISSION_SMTPD_ENFORCE_TLS: 'yes'
+SUBMISSION_SMTPD_TLS_SECURITY_LEVEL: 'encrypt'
+SUBMISSION_SMTPD_TLS_MANDATORY_PROTOCOLS: '!SSLv2,!SSLv3'
+SUBMISSION_TLS_PREEEMPT_CIPHERLIST: 'yes'
+
+P588_SMTPD_CLIENT_RESTRICTIONS: 'permit_mynetworks,permit_sasl_authenticated,reject'
+P588_SMTPD_TLS_AUTH_ONLY: 'no'
+P588_SMTPD_SENDER_RESTRICTIONS: '
+   check_sasl_access,
+   regexp:/etc/postfix/conf/allow_openemail_io.regexp,
+   reject_authenticated_sender_login_mismatch,
+   permit_mynetworks,permit_sasl_authenticated,
+   reject_unlisted_sender,
+   reject_unknown_sender_domain'
+
+P590_SMTPD_CLIENT_RESTRICTIONS: 'permit_mynetworks,reject'
+P590_SMTPD_TLS_AUTH_ONLY: 'no'
+P590_SMTPD_MILTERS: ' '
+P590_NON_SMTPD_MILTERS: ' '
+
+SMTP_ENFORCED_TLS_SMTP_TLS_SECURITY_LEVEL: 'encrypt'
+SMTP_ENFORCED_TLS_SYSLOG_NAME: 'enforced-tls-smtp'
+SMTP_ENFORCED_TLS_SMTP_DELIVERY_STATUS_FILTER:  '/etc/postfix/conf/smtp_dsn_filter'
+
+SMTP_VIA_TRANSPORT_MAPS_SMTP_SASL_PASSWORD_MAPS: '/etc/postfix/mysql/transport_sasl_passwd_maps.cf'
+
+ZEYPLE_EXEC_PATH: '/usr/local/bin/zeyple.py'

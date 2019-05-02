@@ -1,0 +1,14 @@
+####################################
+##  POSTFIX VIRTUAL DOMAINS MAPS  ##
+####################################
+
+hosts       = {{ OE_SQL_SERVER_ADDRESS }}
+user        = {{ OE_DB_BIND_USER }}
+password    = {{ OE_DB_BIND_PASSWD }}
+dbname      = {{ OE_DB_NAME }}
+query       = SELECT alias_domain from alias_domain WHERE alias_domain='%s' AND active='1'
+              UNION
+              SELECT domain FROM domain
+              WHERE domain='%s'
+              AND active = '1'
+              AND backupmx = '0';

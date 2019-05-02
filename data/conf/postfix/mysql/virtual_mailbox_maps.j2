@@ -1,0 +1,11 @@
+
+####################################
+##  POSTFIX VIRTUAL MAILBOX MAPS  ##
+####################################
+
+hosts       = {{ OE_SQL_SERVER_ADDRESS }}:{{ OE_SQL_SERVER_PORT }}
+user        = {{ OE_DB_BIND_USER }}
+password    = {{ OE_DB_BIND_PASSWD }}
+dbname      = {{ OE_DB_NAME }}
+query       = SELECT CONCAT(JSON_UNQUOTE(JSON_EXTRACT(attributes, '$.mailbox_format')), mailbox_path_prefix, '%d/%u/')
+              FROM mailbox WHERE username='%s' AND active = '1';

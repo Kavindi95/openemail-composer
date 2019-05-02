@@ -1,0 +1,10 @@
+##############################
+##  POSTFIX TRANSPORT MAPS  ##
+##############################
+
+hosts       = {{ OE_SQL_SERVER_HOST }}:{{ OE_SQL_SERVER_PORT }}
+user        = {{ OE_DB_BIND_USER }}
+password    = {{ OE_DB_BIND_PASSWD }}
+dbname      = {{ OE_DB_NAME }}
+query       = SELECT CONCAT('smtp_via_transport_maps:', nexthop) AS transport FROM transports
+              WHERE active = '1' AND destination = '%s';

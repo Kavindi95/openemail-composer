@@ -982,7 +982,7 @@ DELIMITER ;';
     $num_results = count($stmt->fetchAll(PDO::FETCH_ASSOC));
     if ($num_results == 0) {
     $stmt = $pdo->query("INSERT INTO `admin` (`username`, `password`, `superadmin`, `created`, `modified`, `active`)
-      VALUES ('admin', '{SSHA256}K8eVJ6YsZbQCfuJvSUbaQRLr0HPLz5rC9IAp0PAFl0tmNDBkMDc0NDAyOTAxN2Rk', 1, NOW(), NOW(), 1)");
+      VALUES ('admin', '{SSHA256}7ffaee9a1ead02bd5fdab80695b545f43a2069fd645d469d265c98a0d21eba51', 1, NOW(), NOW(), 1)");
     $stmt = $pdo->query("INSERT INTO `domain_admins` (`username`, `domain`, `created`, `active`)
         SELECT `username`, 'ALL', NOW(), 1 FROM `admin`
           WHERE superadmin='1' AND `username` NOT IN (SELECT `username` FROM `domain_admins`);");
