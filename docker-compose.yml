@@ -400,7 +400,7 @@ services:
    ipv6nat-openemail:
       depends_on:
         - unbound-openemail
-        - mriadb-openemail
+        - mariadb-openemail
         - redis-openemail
         - clamd-openemail
         - rspamd-openemail
