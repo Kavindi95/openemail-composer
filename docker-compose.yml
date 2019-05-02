@@ -219,7 +219,7 @@ services:
       volumes:
         - ./data/env/postfix:/assets/env/postfix
         - ./data/env/common:/assets/env/common
-        - ./data/conf/postfix/conf:/assets/conf/postfix
+        - ./data/conf/postfix:/assets/conf/postfix
         - ./data/assets/ssl:/etc/ssl/mail/:ro
         - postfix-vol-1:/var/spool/postfix
         - crypt-vol-1:/var/lib/zeyple
