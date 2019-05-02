@@ -417,7 +417,7 @@ POSTFIX_INET_PROTOCOLS: 'all'
 # DEFAULT: all                                                                 #
 #------------------------------------------------------------------------------#
 POSTFIX_INET_INTERFACES: 'all'
-
+chmod 640 /etc/postfix/mysql/*.cf
 #------------------------------------------------------------------------------#
 # POSTFIX SMTPD TLS SETTING                                                    #
 #------------------------------------------------------------------------------#
@@ -460,7 +460,7 @@ POSTFIX_SMTPD_TLS_EXCLUDE_CIPHERS: '
 
 #------------------------------------------------------------------------------#
 # POSTFIX_SSL_DH1024_PARAM_FILE                                                #
-#------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#chmod 640 /etc/postfix/mysql/*.cf
 # LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_tls_dh1024_param_file
 #------------------------------------------------------------------------------#
 POSTFIX_SMTPD_TLS_DH1024_PARAM_FILE: '/etc/ssl/mail/dhparams.pem'
@@ -472,7 +472,7 @@ POSTFIX_SMTPD_TLS_DH1024_PARAM_FILE: '/etc/ssl/mail/dhparams.pem'
 # DEFAULT: See "postconf -d smtpd_tls_eecdh_grade" output                      #
 #------------------------------------------------------------------------------#
 POSTFIX_SMTPD_TLS_EECDH_GRADE: 'auto'
-
+chmod 640 /etc/postfix/mysql/*.cf
 #------------------------------------------------------------------------------#
 # LOG ONLY A SUMMARY MESSAGE                                                   #
 #------------------------------------------------------------------------------#
@@ -482,7 +482,7 @@ POSTFIX_SMTPD_TLS_EECDH_GRADE: 'auto'
 POSTFIX_SMTP_TLS_LOGLEVEL: '1'
 POSTFIX_SMTPD_TLS_LOGLEVEL: '1'
 
-#------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#chmod 640 /etc/postfix/mysql/*.cf
 # POSTFIX_SMTPD_SECURITY_LEVEL                                                 #
 #------------------------------------------------------------------------------#
 # LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_tls_security_level  #
@@ -493,7 +493,7 @@ POSTFIX_TLS_PREEMPT_CIPHERLIST: 'yes'
 POSTFIX_TLS_SSL_OPTIONS: 'NO_COMPRESSION'
 POSTFIX_SMTPD_TLS_MANDATORY_CIPHERS: 'high'
 
-#------------------------------------------------------------------------------#
+#------------------------------------------------------------------------------#chmod 640 /etc/postfix/mysql/*.cf
 # POSTFIX_SMTPD_TLS_RECIEVED_HEADER                                            #
 #------------------------------------------------------------------------------#
 # LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_tls_received_header #
