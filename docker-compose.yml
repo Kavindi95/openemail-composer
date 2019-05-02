@@ -308,7 +308,7 @@ services:
           aliases:
             - nginx
 
-      netfilter-openemail:
+   netfilter-openemail:
       image: openemail/netfilter:1.22
       container_name: netfilter-openemail
       stop_grace_period: 30s
