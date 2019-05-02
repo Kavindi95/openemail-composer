@@ -318,8 +318,6 @@ services:
         - sogo-openemail
         - php-fpm-openemail
         - redis-openemail
-        - openldap-fusiondirectory-openemail
-        - fusiondirectory-openemail
       restart: always
       privileged: true
       environment:
