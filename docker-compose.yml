@@ -77,7 +77,6 @@ services:
       stop_grace_period: 30s
       depends_on:
         - nginx-openemail
-        - letsencrypt
       environment:
         - TZ=${TZ}
       volumes:
