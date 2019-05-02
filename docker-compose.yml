@@ -217,8 +217,8 @@ services:
       image: openemail/postfix:latest
       container_name: postfix-openemail
       volumes:
-        - ./data/env/postfix:/env/postfix
-        - ./data/env/common:/env/common
+        - ./data/env/postfix:/assets/env/postfix
+        - ./data/env/common:/assets/env/common
         - ./data/conf/postfix/config:/etc/postfix
         - ./data/assets/ssl:/etc/ssl/mail/:ro
         - postfix-vol-1:/var/spool/postfix
