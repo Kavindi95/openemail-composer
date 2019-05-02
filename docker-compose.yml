@@ -382,7 +382,7 @@ services:
 
    solr-openemail:
       image: openemail/solr:1.2
-      container_name: dockerapi-openemail
+      container_name: solr-openemail
       restart: always
       volumes:
         - solr-vol-1:/opt/solr/server/solr/dovecot/data
