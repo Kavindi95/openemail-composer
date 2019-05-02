@@ -2,7 +2,7 @@
 # Author: Chinthaka Deshapriya <chinthaka@cybergate.lk>                        #
 ################################################################################
 # This file is part of OpenEMAIL, which is an open source mail server          #
-# solution which runs in set of DOCKER CONTAINERS.                             #
+# solution which runs in a set of DOCKER CONTAINERS.                           #
 #                                                                              #
 # OpenEMAIL is free software: you can redistribute it and/or modify            #
 # it under the terms of the GNU General Public License as published by         #
@@ -455,7 +455,7 @@ smtpd_tls_eecdh_grade = {{ POSTFIX_SMTPD_TLS_EECDH_GRADE }}
 # LOG ONLY A SUMMARY MESSAGE                                                   #
 #------------------------------------------------------------------------------#
 # LEARN MORE: http://www.postfix.org/postconf.5.html#smtp_tls_loglevel         #
-#             http://www.postfix.org/postconf.5.html#smtpd_tls_loglevel        #                               #
+#             http://www.postfix.org/postconf.5.html#smtpd_tls_loglevel        #                              
 #------------------------------------------------------------------------------#
 smtp_tls_loglevel = {{ POSTFIX_SMTP_TLS_LOGLEVEL}}
 smtpd_tls_loglevel = {{ POSTFIX_SMTPD_TLS_LOGLEVEL }}
@@ -489,14 +489,13 @@ smtpd_tls_received_header = {{ POSTFIX_SMTPD_TLS_RECIEVED_HEADER }}
 smtp_tls_security_level = {{ POSTFIX_SMTP_TLS_SECURITY_LEVEL }}
 
 #------------------------------------------------------------------------------#
-# Use the same CA file as smtpd.                                               #
+# NOTE: Use the same CA file as smtpd.                                         #
 #------------------------------------------------------------------------------#
 smtp_tls_CApath = {{ POSTFIX_SSL_CERT_DIR  }}
 smtp_tls_CAfile = {{ POSTFIX_SSL_CACERT_FILE }}
 smtp_tls_cert_file = {{ POSTFIX_SSL_CERT_FILE }}
 smtp_tls_key_file = {{ POSTFIX_SSL_KEY_FILE }}
 smtp_tls_note_starttls_offer = {{ POSTFIX_SMTP_TLS_NOTE_STARTTLS_OFFER }}
-
 
 ################################################################################
 # POSTFIX_POSTSCREEN_PROTECTION                                                #
@@ -620,7 +619,7 @@ smtpd_reject_unlisted_recipient = {{ POSTFIX_SMTPD_REJECT_UNLISTED_RECIPIENT }}
 # POSTFIX_SMTPD_REJECT_UNLISTED_SENDER                                         #
 #------------------------------------------------------------------------------#
 # LEARN MORE:                                                                  #
-# http://www.postfix.org/postconf.5.html#smtpd_reject_unlisted_sender           #
+# http://www.postfix.org/postconf.5.html#smtpd_reject_unlisted_sender          #
 # DEFAULT: no                                                                  #
 #------------------------------------------------------------------------------#
 smtpd_reject_unlisted_sender = {{ POSTFIX_SMTPD_REJECT_UNLISTED_SENDER }}
@@ -716,11 +715,16 @@ smtpd_data_restrictions = {{ POSTFIX_SMTPD_DATA_RESTRICTIONS }}
 #------------------------------------------------------------------------------#
 # POSTFIX_RECIPIENT_CANONICAL_MAPS                                             #
 #------------------------------------------------------------------------------#
-# LEARN MORE: http://www.postfix.org/postconf.5.html#recipient_canonical_maps
+# LEARN MORE: http://www.postfix.org/postconf.5.html#recipient_canonical_maps  #
 #------------------------------------------------------------------------------#
 recipient_canonical_maps = proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/recipient_canonical_maps.cf
 recipient_canonical_classes = {{ POSTFIX_RECIPIENT_CANONICAL_CLASSES }}
 
+#------------------------------------------------------------------------------#
+# POSTFIX_PROXY_READ_MAPS                                                      #
+#------------------------------------------------------------------------------#
+# LEARN MORE: http://www.postfix.org/postconf.5.html#proxy_read_maps           #
+#------------------------------------------------------------------------------#
 proxy_read_maps =
     proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_sender_acl.cf
     proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/tls_policy_override_maps.cf
