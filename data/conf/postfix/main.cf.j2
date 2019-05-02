@@ -692,7 +692,7 @@ smtpd_recipient_restrictions =
     reject_non_fqdn_recipient
     reject_unlisted_recipient
     permit_mynetworks
-    check_recipient_access proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/tls_enforce_in_policy.cf
+    check_recipient_access proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/tls_enforce_in_policy_maps.cf
     permit_sasl_authenticated
     reject_unauth_destination
 
@@ -728,7 +728,7 @@ proxy_read_maps =
     proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/transport_maps.cf
     proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/sender_dependent_sasl_passwd_maps.cf
     proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/sasl_passwd_maps_transport_maps.cf
-    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/tls_enforce_in_policy.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/tls_enforce_in_policy_maps.cf
     proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/sender_bcc_maps.cf
     proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/recipient_bcc_maps.cf
     proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/recipient_canonical_maps.cf
