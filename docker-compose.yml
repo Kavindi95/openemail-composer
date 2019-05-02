@@ -368,7 +368,6 @@ services:
       image: openemail/dockerapi:1.26
       container_name: dockerapi-openemail
       restart: always
-      build: ./data/Dockerfiles/dockerapi
       oom_kill_disable: true
       environment:
         - DBROOT=${DBROOT}
