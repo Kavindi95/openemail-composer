@@ -655,7 +655,7 @@ POSTFIX_SMTP_HEADER_CHECKS_PCRE_FILE: '/etc/postfix/conf/header_checks.pcre'
 # LEARN MORE: http://www.postfix.org/postconf.5.html#smtpd_command_filter      #
 # DEFAULT: empty                                                               #
 #------------------------------------------------------------------------------#
-POSTFIX_SMTPD_COMMAND_FILTER: '/etc/postfix/conf/command_filter'
+POSTFIX_SMTPD_COMMAND_FILTER: '/etc/postfix/conf/command_filter.pcre'
 
 #------------------------------------------------------------------------------#
 # POSTFIX_SMTPD_HELLO_REQUIRED                                                 #
