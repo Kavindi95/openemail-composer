@@ -27,7 +27,7 @@ if [[ "$response" =~ ^(yes|y)$ ]]; then
 Reset credentials:
 ---
 Username: admin
-Password: moohoo
+Password: openemail
 TFA: none
 "
 else
