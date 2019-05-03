@@ -380,7 +380,7 @@ mkdir -p data/env/common
 
 cat << EOF > data/env/common/mysql_db_connector.yaml
 OE_HOSTNAME: ${OPENEMAIL_HOSTNAME}
-OE_SQL_SERVER_HOST: mariadb-openemail
+OE_SQL_SERVER_HOST: mysql-openemail
 OE_SQL_SERVER_PORT: 389
 OE_DB_BIND_USER: openemail
 OE_DB_BIND_PASSWD: ${OE_DB_USER_PASSWD}
