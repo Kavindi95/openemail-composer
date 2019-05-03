@@ -689,7 +689,7 @@ smtpd_tls_auth_only = {{ POSTFIX_SMTPD_TLS_AUTH_ONLY }}
 #------------------------------------------------------------------------------#
 smtpd_recipient_restrictions =
     reject_non_fqdn_recipient
-    reject_unlisted_recipient
+    reject_unlisted_recipient`
     permit_mynetworks
     check_recipient_access proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/tls_enforce_in_policy_maps.cf
     permit_sasl_authenticated
