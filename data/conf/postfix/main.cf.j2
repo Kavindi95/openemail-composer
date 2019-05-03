@@ -850,7 +850,7 @@ smtpd_sender_login_maps =
 # LEARN MORE: http://www.postfix.org/postconf.5.html#virtual_mailbox_domains   #
 #------------------------------------------------------------------------------#
 virtual_mailbox_domains =
-    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_mailbox_domains.cf
+    proxy:mysql:{{ POSTFIX_LOOKUP_MYSQL_DIR }}/virtual_domains_maps.cf
 
 #------------------------------------------------------------------------------#
 # POSTFIX_RELAY_DOMAINS                                                        #
