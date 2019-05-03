@@ -268,12 +268,13 @@ services:
         - php-fpm-openemail
         - redis-openemail
       image: nginx:mainline-alpine
+      container_name: nginx-openemail
       command: /bin/sh -c "envsubst < /etc/nginx/conf.d/templates/listen_plain.template > /etc/nginx/conf.d/listen_plain.active &&
         envsubst < /etc/nginx/conf.d/templates/listen_ssl.template > /etc/nginx/conf.d/listen_ssl.active &&
         envsubst < /etc/nginx/conf.d/templates/server_name.template > /etc/nginx/conf.d/server_name.active &&
         envsubst < /etc/nginx/conf.d/templates/sogo.template > /etc/nginx/conf.d/sogo.active &&
         envsubst < /etc/nginx/conf.d/templates/sogo_eas.template > /etc/nginx/conf.d/sogo_eas.active &&
-        nginx -qt &&
+        - ./data/web:/web:rw        nginx -qt &&
         until ping phpfpm -c1 > /dev/null; do sleep 1; done &&
         until ping sogo -c1 > /dev/null; do sleep 1; done &&
         until ping redis -c1 > /dev/null; do sleep 1; done &&
@@ -304,7 +305,7 @@ services:
         openemail-network:
           aliases:
             - nginx
-            
+                    - ./data/web:/web:rw
    acme-openemail:
       depends_on:
         - nginx-openemail
@@ -318,7 +319,7 @@ services:
         - OPENEMAIL_HOSTNAME=${OPENEMAIL_HOSTNAME}
         - DBNAME=${DBNAME}
         - DBUSER=${DBUSER}
-        - DBPASS=${DBPASS}
+        - DBPASS=${DBPASS}        - ./data/web:/web:rw
         - SKIP_LETS_ENCRYPT=${SKIP_LETS_ENCRYPT:-n}
         - SKIP_IP_CHECK=${SKIP_IP_CHECK:-n}
         - LE_STAGING=${LE_STAGING:-n}
@@ -345,7 +346,7 @@ services:
         - php-fpm-openemail
         - redis-openemail
       restart: always
-      privileged: true
+      privileged: true        - ./data/web:/web:rw
       environment:
         - TZ=${TZ}
         - IPV4_NETWORK=${IPV4_NETWORK:-172.22.1}
