@@ -36,6 +36,7 @@ services:
       networks:
         openemail-network:
           aliases:
+          - mysql-openemail
           - mysql
 
    redis-openemail:
