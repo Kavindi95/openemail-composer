@@ -17,9 +17,9 @@ services:
           aliases:
             - unbound
 
-   mariadb-openemail:
+   mysql-openemail:
       image: mariadb:10.2
-      container_name: mariadb-openemail
+      container_name: mysql-openemail
       volumes:
         - mysql-vol-1:/var/lib/mysql/
         - mysql-socket-vol-1:/var/run/mysqld/
@@ -36,7 +36,7 @@ services:
       networks:
         openemail-network:
           aliases:
-          - mysql-openemail
+          - mariadb-openemail
           - mysql
 
    redis-openemail:
@@ -426,7 +426,7 @@ services:
    ipv6nat-openemail:
       depends_on:
         - unbound-openemail
-        - mariadb-openemail
+        - mysql-openemail
         - redis-openemail
         - clamd-openemail
         - rspamd-openemail
