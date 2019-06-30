@@ -1,0 +1,426 @@
+################################################################################
+# Author: Chinthaka Deshapriya <chinthaka@cybergate.lk>                        #
+################################################################################
+# This file is part of OpenEMAIL, which is an open source mail server          #
+# solution which runs in a set of DOCKER CONTAINERS.                           #
+#                                                                              #
+# OpenEMAIL is free software: you can redistribute it and/or modify            #
+# it under the terms of the GNU General Public License as published by         #
+# the Free Software Foundation, either version 3 of the License, or            #
+# (at your option) any later version.                                          #
+#                                                                              #
+# OpenEMAIL is distributed in the hope that it will be useful for              #
+# your purpose  but WITHOUT ANY WARRANTY; without even the implied             #
+# warranty of    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.          #
+# See the  GNU General Public License for more details.                        #
+#                                                                              #
+# You should have received a copy of the GNU General Public License            #
+# along with OpenEMAIL.  If not, see <http://www.gnu.org/licenses/>.           #
+################################################################################
+
+################################################################################
+# DOVECOT.CONF MAIN CONFIGURATION PARAMETERS                                   #
+################################################################################
+
+#------------------------------------------------------------------------------#
+# DOVECOT_CONF_DIR                                                             #
+#------------------------------------------------------------------------------#
+# Default: /etc/dovecot                                                        #
+#------------------------------------------------------------------------------#
+DOVECOT_CONF_DIR: '/usr/local/etc/dovecot'
+#------------------------------------------------------------------------------#
+# DOVECOT_LIB_DIR                                                              #
+#------------------------------------------------------------------------------#
+# Default: /usr/lib/dovecot                                                    #
+#------------------------------------------------------------------------------#
+DOVECOT_LIB_DIR: '/usr/local/lib/dovecot'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_VMAIL_USER                                                           #
+#------------------------------------------------------------------------------#
+# Default: vmail                                                               #
+#------------------------------------------------------------------------------#
+DOVECOT_VMAIL_USER: 'vmail'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_VMAIL_GROUP                                                          #
+#------------------------------------------------------------------------------#
+# Default: vmail                                                               #
+#------------------------------------------------------------------------------#
+DOVECOT_VMAIL_GROUP: 'vmail'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_FILE_MODE                                                            #
+#------------------------------------------------------------------------------#
+# Default: 660                                                                 #
+#------------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+# DOVECOT_AUTH_MECHANISMS                                                      #
+#------------------------------------------------------------------------------#
+# LEARN MORE: https://wiki2.dovecot.org/Authentication/Mechanisms              #
+#------------------------------------------------------------------------------#
+DOVECOT_AUTH_MECHANISMS: 'plain login'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_DEBUG                                                           #
+#------------------------------------------------------------------------------#
+DOVECOT_MAIL_DEBUG: 'yes'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_AUTH_DEBUG                                                           #
+#------------------------------------------------------------------------------#
+DOVECOT_AUTH_DEBUG: 'yes'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_LOG_PATH                                                             #
+#------------------------------------------------------------------------------#
+DOVECOT_LOG_PATH: 'syslog'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_DISABLE_PLAINTEXT_AUTH                                               #
+#------------------------------------------------------------------------------#
+DOVECOT_DISABLE_PLAINTEXT_AUTH: 'yes'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_LOGIN_LOG_FORMAT_ELEMENTS                                            #
+#------------------------------------------------------------------------------#
+DOVECOT_LOGIN_LOG_FORMAT_ELEMENTS: '"user=%u method=%m rip=%r lip=%l mpid=%e %c %k"'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_HOME                                                            #
+#------------------------------------------------------------------------------#
+DOVECOT_MAIL_HOME: '/var/vmail/%d/%n'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_LOCATION                                                        #
+#------------------------------------------------------------------------------#
+DOVECOT_MAIL_LOCATION: 'maildir:~/'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_PLUGINS                                                         #
+#------------------------------------------------------------------------------#
+DOVECOT_MAIL_PLUGINS: '</usr/local/etc/dovecot/mail_plugins'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_ATTACHMENT_FS                                                   #
+#------------------------------------------------------------------------------#
+# LEARN MORE: https://wiki.dovecot.org/Plugins/MailCrypt                       #
+#------------------------------------------------------------------------------#
+DOVECOT_MAIL_ATTACHMENT_FS: 'crypt:set_prefix=mail_crypt_global:posix:'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_ATTACHMENT_DIR                                                  #
+#------------------------------------------------------------------------------#
+DOVECOT_MAIL_ATTACHMENT_DIR: '/var/attachments'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_ATTACHMENT_MIN_SIZE                                             #
+#------------------------------------------------------------------------------#
+DOVECOT_MAIL_ATTACHMENT_MIN_SIZE: '128k'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SSL_MIN_PROTOCOL                                                     #
+#------------------------------------------------------------------------------#
+# Dovecot 2.3
+#------------------------------------------------------------------------------#
+DOVECOT_SSL_MIN_PROTOCOL: 'TLSv1'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SSL_PERFER_SERVER_CIPHERS                                            #
+#------------------------------------------------------------------------------#
+DOVECOT_SSL_PERFER_SERVER_CIPHERS: 'yes'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SSL_CIPHER_LIST                                                      #
+#------------------------------------------------------------------------------#
+DOVECOT_SSL_CIPHER_LIST: 'ALL:!ADH:!LOW:!SSLv2:!SSLv3:!EXP:!aNULL:!eNULL:!3DES:!MD5:!PSK:!DSS:!RC4:!SEED:!IDEA:+HIGH:+MEDIUM'
+#------------------------------------------------------------------------------#
+# DOVECOT_SSL_OPTIONS                                                          #
+#------------------------------------------------------------------------------#
+DOVECOT_SSL_OPTIONS: 'no_compression'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SSL_DH                                                               #
+#------------------------------------------------------------------------------#
+# Dhparams: Dovecot 2.3                                                        #
+#------------------------------------------------------------------------------#
+DOVECOT_SSL_DH: '</etc/ssl/mail/dhparams.pem'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_LOG_TIMESTAMP                                                        #
+#------------------------------------------------------------------------------#
+DOVECOT_LOG_TIMESTAMP: '"%Y-%m-%d %H:%M:%S "'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_RECIPIENT_DELIMITER                                                  #
+#------------------------------------------------------------------------------#
+DOVECOT_RECIPIENT_DELIMITER: '+'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_AUTH_MASTER_USER_SEPARATOR                                           #
+#------------------------------------------------------------------------------#
+DOVECOT_AUTH_MASTER_USER_SEPARATOR: '*'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_SHARED_EXPLICIT_INBOX                                           #
+#------------------------------------------------------------------------------#
+DOVECOT_MAIL_SHARED_EXPLICIT_INBOX: 'yes'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_PREFETCH_COUNT                                                  #
+#------------------------------------------------------------------------------#
+DOVECOT_MAIL_PREFETCH_COUNT: '30'
+
+################################################################################
+# DOVECOT NFS STORAGE CONFG                                                    #
+################################################################################
+# LEARN MORE: https://wiki.dovecot.org/NFS                                     #
+#-------------------------------------------------------------------------------
+
+################################################################################
+# DOVECOT_USERDB_LDAP_ARGS                                                     #
+################################################################################
+DOVECOT_USERDB_LDAP_ARGS: '/usr/local/etc/dovecot/ldap/ldap-userdb.conf'
+
+################################################################################
+# DOVECOT_PASSDB_LDAP_ARGS                                                     #
+################################################################################
+DOVECOT_PASSDB_LDAP_ARGS: '/usr/local/etc/dovecot/ldap/ldap-userdb.conf'
+
+################################################################################
+# DOVECOT_MASTER_PASSWD_ARGS                                                   #
+################################################################################
+DOVECOT_MASTER_PASSWD_ARGS: '/usr/local/etc/dovecot/dovecot-master.passwd'
+
+################################################################################
+# DOVECOT_MASTER_USERDB_ARGS                                                   #
+################################################################################
+DOVECOT_MASTER_USERDB_ARGS: '/usr/local/etc/dovecot/dovecot-master.userdb'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_DOVEADM_PASSWORD                                                     #
+#------------------------------------------------------------------------------#
+# Set doveadm_password=your-secret-password in data/conf/dovecot/extra.conf    #
+# Create if missing                                                            #
+#------------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+# DOVECOT_DOVEADM_LISTNER_PORT                                                 #
+#------------------------------------------------------------------------------#
+DOVECOT_DOVEADM_LISTNER_PORT: '12345'
+
+################################################################################
+# DOVECOT MYSQL AUTH CONFIG                                                    #
+################################################################################
+
+#------------------------------------------------------------------------------#
+# DOVEOT_MYSQL_AUTH_PASSDB_ARGS                                                #
+#------------------------------------------------------------------------------#
+DOVEOT_MYSQL_AUTH_PASSDB_ARGS: '/usr/local/etc/dovecot/sql/dovecot-dict-sql-passdb.conf'
+
+#------------------------------------------------------------------------------#
+# DOVEOT_MYSQL_AUTH_USERDB_ARGS                                                #
+#------------------------------------------------------------------------------#
+DOVEOT_MYSQL_AUTH_USERDB_ARGS: '/usr/local/etc/dovecot/sql/dovecot-dict-sql-userdb.conf'
+
+################################################################################
+# DOVEOT MAIL INBOX CONFIG                                                     #
+################################################################################
+# NOTE: This section has no vaiables                                           #
+#------------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SERVICE_LOG_CONFIG                                                   #
+#------------------------------------------------------------------------------#
+DOVECOT_SERVICE_LOG_USER: 'dovenull'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SERVICE_AUTH_CONFIG                                                  #
+#------------------------------------------------------------------------------#
+DOVECOT_SERVICE_AUTH_AUTH_INET_PORT: '10001'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SERVICE_MANAGESIEVE_LOGIN_CONFIG                                     #
+#------------------------------------------------------------------------------#
+DOVECOT_SERVICE_MANAGESIEVE_LOGIN_SIEVE_PORT: '4190'
+DOVECOT_SERVICE_MANAGESIEVE_LOGIN_SERVICE_COUNT: '1'
+DOVECOT_SERVICE_MANAGESIEVE_LOGIN_PROCESS_MIN_AVAIL: '2'
+DOVECOT_SERVICE_MANAGESIEVE_LOGIN_VSZ_LIMIT: '1G'
+
+#---------------------------------- -------------------------------------------#
+# DOVECOT_SERVICE_MANAGESIEVE_CONFIG                                           #
+#------------------------------------------------------------------------------#
+DOVECOT_SERVICE_MANAGESIEVE_PROCESS_LIMIT: '256'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SERVICE_IMAP_LOGIN_CONFIG                                            #
+#------------------------------------------------------------------------------#
+DOVECOT_SERVICE_IMAP_LOGIN_SERVICE_COUNT: '1'
+DOVECOT_SERVICE_IMAP_LOGIN_PROCESS_LIMIT: '10000'
+DOVECOT_SERVICE_IMAP_LOGIN_VSZ_LIMIT: '1G'
+DOVECOT_SERVICE_IMAP_LOGIN_USER: 'dovenull'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SERVICE_IMAP_CONFIG                                                  #
+#------------------------------------------------------------------------------#
+DOVECOT_SERVICE_IMAP_EXECUTABLE: 'imap imap-postlogin'
+DOVECOT_SERVICE_IMAP_VSZ_LIMIT: '1G'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SERVICE_POP3_LOGIN_CONFIG                                            #
+#------------------------------------------------------------------------------#
+DOVECOT_SERVICE_POP3_LOGIN_SERVICE_COUNT: '1'
+DOVECOT_SERVICE_POP3_LOGIN_VSZ_LIMIT: '1G'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SERVICE_LMTP_CONFIG                                                  #
+#------------------------------------------------------------------------------#
+DOVECOT_SERVICE_LMTP_PORT: '24'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_LISTENER_CONFIG                                                      #
+#------------------------------------------------------------------------------#
+DOVECOT_LISTEN: '*,[::]'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_TLS_CERTFICATE_AND_KEY                                               #
+#------------------------------------------------------------------------------#
+DOVECOT_SSL_CERT: '</etc/ssl/mail/cert.pem'
+DOVECOT_SSL_KEY: '</etc/ssl/mail/key.pem'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_PROTOCOL_IMAP_CONFIG                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE: https://wiki.dovecot.org/ImapMetadata                            #
+#------------------------------------------------------------------------------#
+DOVECOT_PROTOCOL_IMAP_MAIL_PLUGINS: '</usr/local/etc/dovecot/mail_plugins_imap'
+DOVECOT_PROTOCOL_IMAP_IMAP_METADATA: 'yes'
+DOVECOT_MAIL_ATTRIBUTE_DICT: '%h/dovecot-attributes'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_PROTOCOL_LMTP_CONFIG                                                 #
+#------------------------------------------------------------------------------#
+DOVECOT_PROTOCOL_LMTP_MAIL_PLUGINS: '</usr/local/etc/dovecot/mail_plugins_lmtp'
+DOVECOT_PROTOCOL_LMTP_AUTH_SOCKET_PATH: '/usr/local/var/run/dovecot/auth-master'
+
+#------------------------------------------------------------------------------#
+# DOVECOT_PROTOCOL_SIEVE_CONFIG                                                #
+#------------------------------------------------------------------------------#
+DOVECOT_PROTOCOL_SIEVE_MANAGESIEVE_LOGOUT_FORMAT: 'bytes=%i/%o'
+
+
+################################################################################
+# DOVECOT PLUGIN CONFIGURATION                                                 #
+################################################################################
+
+#----------------------------------------------------------------------------#
+#  Allow "any" or "authenticated" to be used in ACLs                         #
+#----------------------------------------------------------------------------#
+DOVECOT_PLUGIN_ACL_ANYONE: '</usr/local/etc/dovecot/acl_anyone'
+DOVECOT_PLUGIN_ACL_SHARED_DICT: '/var/vmail/shared-mailboxes.db'
+DOVECOT_PLUGIN_ACL: 'vfile'
+DOVECOT_PLUGIN_FTS: 'solr'
+DOVECOT_PLUGIN_FTS_AUTOINDEX: 'yes'
+DOVECOT_PLUGIN_FTS_SOLR: 'url=http://solr-openemail:8983/solr/dovecot-fts/'
+DOVECOT_PLUGIN_QUOTA: 'dict:Userquota::proxy::sqlquota'
+DOVECOT_PLUGIN_QUOTA_RULE2: 'Trash:storage=+100%%'
+DOVECOT_PLUGIN_SIEVE: '/var/vmail/sieve/%u.sieve'
+DOVECOT_PLUGIN_SIEVE_PLUGINS: 'sieve_imapsieve sieve_extprograms'
+DOVECOT_PLUGIN_SIEVE_VACATION_SEND_FROM_RECIPIENT: 'yes'
+
+#------------------------------------------------------------------------------#
+# From elsewhere to Spam folder                                                #
+#------------------------------------------------------------------------------#
+DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX1_NAME: 'Junk'
+DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX1_CAUSES: 'COPY'
+DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX1_BEFORE: '/usr/local/lib/dovecot/sieve/report-spam.sieve'
+#------------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+# From Spam folder to elsewhere                                                #
+#------------------------------------------------------------------------------#
+DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX2_FROM: '*'
+DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX2_NAME: 'Junk'
+DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX2_CAUSES: 'COPY'
+DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX2_BEFORE: '/usr/local/lib/dovecot/sieve/report-ham.sieve'
+
+#------------------------------------------------------------------------------#
+# QUOTA WARNINGS                                                               #
+#------------------------------------------------------------------------------#
+DOVECOT_PLUGIN_QUOTA_WARNING: 'storage=95%% quota-warning 95 %u'
+DOVECOT_PLUGIN_QUOTA_WARNING2: 'storage=80%% quota-warning 80 %u'
+
+#------------------------------------------------------------------------------#
+# SIEVE_CONFIGURATIONS                                                         #
+#------------------------------------------------------------------------------#
+DOVECOT_PLUGIN_SIEVE_PIPE_BIN_DIR: '/usr/local/lib/dovecot/sieve'
+DOVECOT_PLUGIN_SIEVE_GLOBAL_EXTENSIONS: '+vnd.dovecot.pipe +vnd.dovecot.execute'
+DOVECOT_PLUGIN_SIEVE_EXTENSIONS: '+notify +imapflags +vacation-seconds'
+DOVECOT_PLUGIN_SIEVE_MAX_SCRIPT_SIZE: '1M'
+DOVECOT_PLUGIN_SIEVE_MAX_REDIRECTS: '30'
+DOVECOT_PLUGIN_SIEVE_QUOTA_MAX_SCRIPTS: '0'
+DOVECOT_PLUGIN_SIEVE_QUOTA_MAX_STORAGE: '0'
+DOVECOT_PLUGIN_LISTESCAPE_CHAR: '"\\"'
+DOVECOT_PLUGIN_SIEVE_VACATION_MIN_PERIOD: '5s'
+DOVECOT_PLUGIN_SIEVE_VACATION_MAX_PERIOD: '0'
+DOVECOT_PLUGIN_SIEVE_VACATION_DEFAULT_PERIOD: '60s'
+DOVECOT_PLUGIN_SIEVE_BEFORE: 'dict:proxy::sieve_before;name=active;bindir=/var/vmail/sieve_before_bindir'
+DOVECOT_PLUGIN_SIEVE_AFTER: 'dict:proxy::sieve_after;name=active;bindir=/var/vmail/sieve_after_bindir'
+DOVECOT_PLUGIN_SIEVE_AFTER2: '/var/vmail/sieve/global.sieve'
+
+#------------------------------------------------------------------------------#
+#  GLOBAL EMAIL ENCRYPTION                                                     #
+#------------------------------------------------------------------------------#
+# LEARN MORE: https://wiki.dovecot.org/Plugins/MailCrypt                       #
+#------------------------------------------------------------------------------#
+DOVECOT_MAIL_CRYPT_GLOBAL_PRIVATE_KEY: '</mail_crypt/ecprivkey.pem'
+DOVECOT_MAIL_CRYPT_GLOBAL_PUBLIC_KEY: '</mail_crypt/ecpubkey.pem'
+DOVECOT_MAIL_CRYPT_SAVE_VERSION: '2'
+#------------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+# Enable compression while saving, lz4 Dovecot v2.2.11+                        #
+#------------------------------------------------------------------------------#
+DOVECOT_ZLIB_SAVE: 'lz4'
+
+#------------------------------------------------------------------------------#
+# DOVECOT MAIL LOG                                                             #
+#------------------------------------------------------------------------------#
+DOVECOT_MAIL_LOG_EVENTS: 'delete undelete expunge copy mailbox_delete mailbox_rename'
+DOVECOT_MAIL_LOG_FIELDS: 'uid box msgid size'
+DOVECOT_MAIL_LOG_CACHED_ONLY: 'yes'
+
+#------------------------------------------------------------------------------#
+# DOVECOT SERVICE QUOTA WARNING                                                #
+#------------------------------------------------------------------------------#
+DOVECOT_QUOTA_WARNING_EXECUTABLE: 'script /usr/local/bin/quota_notify.py'
+DOVECOT_QUOTA_WARNING_USER: 'vmail'
+
+DOVECOT_SQLQUOTA_CONF: '/usr/local/etc/dovecot/sql/dovecot-dict-sql-quota.conf'
+DOVECOT_SEVIE_AFTER_CONF: '/usr/local/etc/dovecot/sql/dovecot-dict-sql-sieve_after.conf'
+DOVECOT_SIEVE_BEFORE_CONF: '/usr/local/etc/dovecot/sql/dovecot-dict-sql-sieve_before.conf'
+
+DOVECOT_REMOTE_DISABLE_PLAINTEXT_AUTH: 'no'
+
+DOVECOT_SUBMISSION_HOST: 'postfix-openemail'
+DOVECOT_SUBMISSION_PORT: '588'
+
+DOVECOT_MAIL_MAX_USERIP_CONNECTIONS: '500'
+
+DOVECOT_IMAP_POSTLOGIN_EXECUTABLE: 'script-login /usr/local/bin/postlogin.sh'
+
+DOVECOT_IMAP_MAX_LINE_LENGHT: '2 M'
+#------------------------------------------------------------------------------#
+
+DOVECOT_AUTH_CACHE_VERIFY_PASSWORD_WITH_WORKER: 'yes'
+
+DOVECOT_CACHE_NEGATIVE_TTL: '0'
+
+DOVECOT_AUTH_CACHE_TTL: '30 s'
+
+DOVECOT_AUTH_CACHE_SIZE: '2 M'
+
+DOVECOT_DEFAULT_CLIENT_LIMIT: '10400'
+
+DOVECOT_EXTRA_CONFIG_FILE: '/usr/local/etc/dovecot/extra.conf'

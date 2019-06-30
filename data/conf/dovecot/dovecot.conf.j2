@@ -1,0 +1,635 @@
+################################################################################
+# Author: Chinthaka Deshapriya <chinthaka@cybergate.lk>                        #
+################################################################################
+# This file is part of OpenEMAIL, which is an open source mail server          #
+# solution which runs in a set of DOCKER CONTAINERS.                           #
+#                                                                              #
+# OpenEMAIL is free software: you can redistribute it and/or modify            #
+# it under the terms of the GNU General Public License as published by         #
+# the Free Software Foundation, either version 3 of the License, or            #
+# (at your option) any later version.                                          #
+#                                                                              #
+# OpenEMAIL is distributed in the hope that it will be useful for              #
+# your purpose  but WITHOUT ANY WARRANTY; without even the implied             #
+# warranty of    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.          #
+# See the  GNU General Public License for more details.                        #
+#                                                                              #
+# You should have received a copy of the GNU General Public License            #
+# along with OpenEMAIL.  If not, see <http://www.gnu.org/licenses/>.           #
+################################################################################
+
+################################################################################
+# DOVECOT.CONF MAIN CONFIGURATION TEMPLATE                                     #
+################################################################################
+
+#------------------------------------------------------------------------------#
+# DOVECOT_AUTH_MECHANISMS                                                      #
+#------------------------------------------------------------------------------#
+# LEARN MORE: https://wiki2.dovecot.org/Authentication/Mechanisms              #
+#------------------------------------------------------------------------------#
+auth_mechanisms = {{ DOVECOT_AUTH_MECHANISMS }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_DEBUG                                                           #
+#------------------------------------------------------------------------------#
+mail_debug = {{ DOVECOT_MAIL_DEBUG }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_AUTH_DEBUG                                                           #
+#------------------------------------------------------------------------------#
+auth_debug = {{ DOVECOT_AUTH_DEBUG }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_LOG_PATH                                                             #
+#------------------------------------------------------------------------------#
+log_path = {{ DOVECOT_LOG_PATH }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_DISABLE_PLAINTEXT_AUTH                                               #
+#------------------------------------------------------------------------------#
+disable_plaintext_auth = {{ DOVECOT_DISABLE_PLAINTEXT_AUTH }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_LOGIN_LOG_FORMAT_ELEMENTS                                            #
+#------------------------------------------------------------------------------#
+login_log_format_elements = {{ DOVECOT_LOGIN_LOG_FORMAT_ELEMENTS }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_HOME                                                            #
+#------------------------------------------------------------------------------#
+mail_home = {{ DOVECOT_MAIL_HOME }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_LOCATION                                                        #
+#------------------------------------------------------------------------------#
+mail_location = {{ DOVECOT_MAIL_LOCATION }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_PLUGINS                                                         #
+#------------------------------------------------------------------------------#
+mail_plugins = {{ DOVECOT_MAIL_PLUGINS }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_ATTACHMENT_FS                                                   #
+#------------------------------------------------------------------------------#
+mail_attachment_fs = {{ DOVECOT_MAIL_ATTACHMENT_FS }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_ATTACHMENT_DIR                                                  #
+#------------------------------------------------------------------------------#
+mail_attachment_dir = {{ DOVECOT_MAIL_ATTACHMENT_DIR }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_ATTACHMENT_MIN_SIZE                                             #
+#------------------------------------------------------------------------------#
+mail_attachment_min_size = {{ DOVECOT_MAIL_ATTACHMENT_MIN_SIZE }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SSL_PROTOCOL                                                         #
+#------------------------------------------------------------------------------#
+# Dovecot 2.3
+#------------------------------------------------------------------------------#
+ssl_min_protocol = {{ DOVECOT_SSL_MIN_PROTOCOL }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SSL_PERFER_SERVER_CIPHERS                                            #
+#------------------------------------------------------------------------------#
+ssl_prefer_server_ciphers = {{ DOVECOT_SSL_PERFER_SERVER_CIPHERS }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SSL_CIPHER_LIST                                                      #
+#------------------------------------------------------------------------------#
+ssl_cipher_list = {{ DOVECOT_SSL_CIPHER_LIST }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SSL_OPTIONS                                                          #
+#------------------------------------------------------------------------------#
+ssl_options = {{ DOVECOT_SSL_OPTIONS }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_SSL_DH                                                               #
+#------------------------------------------------------------------------------#
+# Dhparams: Dovecot 2.3                                                        #
+#------------------------------------------------------------------------------#
+ssl_dh = {{ DOVECOT_SSL_DH }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_LOG_TIMESTAMP                                                        #
+#------------------------------------------------------------------------------#
+log_timestamp = {{ DOVECOT_LOG_TIMESTAMP }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_RECIPIENT_DELIMITER                                                  #
+#------------------------------------------------------------------------------#
+recipient_delimiter = {{ DOVECOT_RECIPIENT_DELIMITER }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_AUTH_MASTER_USER_SEPARATOR                                           #
+#------------------------------------------------------------------------------#
+auth_master_user_separator = {{ DOVECOT_AUTH_MASTER_USER_SEPARATOR }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_SHARED_EXPLICIT_INBOX                                           #
+#------------------------------------------------------------------------------#
+mail_shared_explicit_inbox = {{ DOVECOT_MAIL_SHARED_EXPLICIT_INBOX }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_MAIL_PREFETCH_COUNT                                                  #
+#------------------------------------------------------------------------------#
+mail_prefetch_count = {{ DOVECOT_MAIL_PREFETCH_COUNT }}
+
+################################################################################
+# DOVECOT NFS STORAGE CONFG                                                    #
+################################################################################
+# LEARN MORE: https://wiki.dovecot.org/NFS                                     #
+#-------------------------------------------------------------------------------
+
+################################################################################
+#  DOVECOT LDAP AUTH CONFIG                                                    #
+################################################################################
+
+userdb {
+  args = {{ DOVECOT_USERDB_LDAP_ARGS }}
+  driver = ldap
+}
+
+passdb {
+  args = {{ DOVECOT_PASSDB_LDAP_ARGS }}
+  driver = ldap
+}
+
+################################################################################
+# DOVECOT MASTER AUTH CONFIG                                                   #
+################################################################################
+
+passdb {
+  driver = passwd-file
+  args =  {{ DOVECOT_MASTER_PASSWD_ARGS }}
+  master = yes
+  pass = yes
+}
+
+passdb {
+  driver = passwd-file
+  args = {{ DOVECOT_MASTER_PASSWD_ARGS }}
+  skip = authenticated
+}
+
+userdb {
+  driver = passwd-file
+  args = {{ DOVECOT_MASTER_USERDB_ARGS }}
+}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_DOVEADM_PASSWORD                                                     #
+#------------------------------------------------------------------------------#
+# Set doveadm_password=your-secret-password in data/conf/dovecot/extra.conf    #
+# Create if missing                                                            #
+#------------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------#
+# DOVECOT_DOVEADM_LISTNER_PORT                                                 #
+#------------------------------------------------------------------------------#
+
+service doveadm {
+  inet_listener {
+    port = {{ DOVECOT_DOVEADM_LISTNER_PORT }}
+  }
+}
+
+################################################################################
+# DOVECOT MYSQL AUTH CONFIG                                                    #
+################################################################################
+
+passdb {
+  args = {{ DOVEOT_MYSQL_AUTH_PASSDB_ARGS }}
+  driver = sql
+  result_success = return-ok
+  result_failure = continue
+  result_internalfail = continue
+}
+
+userdb {
+  args = {{ DOVEOT_MYSQL_AUTH_USERDB_ARGS }}
+  driver = sql
+  skip = found
+}
+
+################################################################################
+# DOVEOT MAIL INBOX CONFIG                                                     #
+################################################################################
+
+namespace inbox {
+  inbox = yes
+  location =
+  separator = /
+  mailbox "Trash" {
+    auto = subscribe
+    special_use = \Trash
+  }
+  mailbox "Deleted Messages" {
+    special_use = \Trash
+  }
+  mailbox "Deleted Items" {
+    special_use = \Trash
+  }
+  mailbox "Rubbish" {
+    special_use = \Trash
+  }
+  mailbox "Gelöschte Objekte" {
+    special_use = \Trash
+  }
+  mailbox "Gelöschte Elemente" {
+    special_use = \Trash
+  }
+  mailbox "Papierkorb" {
+    special_use = \Trash
+  }
+  mailbox "Itens Excluidos" {
+    special_use = \Trash
+  }
+  mailbox "Itens Excluídos" {
+    special_use = \Trash
+  }
+  mailbox "Lixeira" {
+    special_use = \Trash
+  }
+  mailbox "Prullenbak" {
+    special_use = \Trash
+  }
+  mailbox "Verwijderde items" {
+    special_use = \Trash
+  }
+  mailbox "Archive" {
+    auto = subscribe
+    special_use = \Archive
+  }
+  mailbox "Archiv" {
+    special_use = \Archive
+  }
+  mailbox "Archives" {
+    special_use = \Archive
+  }
+  mailbox "Arquivo" {
+    special_use = \Archive
+  }
+  mailbox "Arquivos" {
+    special_use = \Archive
+  }
+  mailbox "Archief" {
+    special_use = \Archive
+  }
+  mailbox "Sent" {
+    auto = subscribe
+    special_use = \Sent
+  }
+  mailbox "Sent Messages" {
+    special_use = \Sent
+  }
+  mailbox "Sent Items" {
+    special_use = \Sent
+  }
+  mailbox "Gesendet" {
+    special_use = \Sent
+  }
+  mailbox "Gesendete Objekte" {
+    special_use = \Sent
+  }
+  mailbox "Gesendete Elemente" {
+    special_use = \Sent
+  }
+  mailbox "Itens Enviados" {
+    special_use = \Sent
+  }
+  mailbox "Enviados" {
+    special_use = \Sent
+  }
+  mailbox "Verzonden items" {
+    special_use = \Sent
+  }
+  mailbox "Verzonden" {
+    special_use = \Sent
+  }
+  mailbox "Drafts" {
+    auto = subscribe
+    special_use = \Drafts
+  }
+  mailbox "Entwürfe" {
+    special_use = \Drafts
+  }
+  mailbox "Rascunhos" {
+    special_use = \Drafts
+  }
+  mailbox "Concepten" {
+    special_use = \Drafts
+  }
+  mailbox "Junk" {
+    auto = subscribe
+    special_use = \Junk
+  }
+  mailbox "Junk-E-Mail" {
+    special_use = \Junk
+  }
+  mailbox "Junk E-Mail" {
+    special_use = \Junk
+  }
+  mailbox "Spam" {
+    special_use = \Junk
+  }
+  mailbox "Lixo Eletrônico" {
+    special_use = \Junk
+  }
+  mailbox "Ongewenste e-mail" {
+    special_use = \Junk
+  }
+  mailbox "Koncepty" {
+    special_use = \Drafts
+  }
+  mailbox "Nevyžádaná pošta" {
+    special_use = \Junk
+  }
+  mailbox "Odstraněná pošta" {
+    special_use = \Trash
+  }
+  mailbox "Odeslaná pošta" {
+    special_use = \Sent
+  }
+  prefix =
+}
+
+namespace {
+    type = shared
+    separator = /
+    prefix = Shared/%%u/
+    location = maildir:%%h/:INDEX=~/Shared/%%u;CONTROL=~/Shared/%%u
+    subscriptions = no
+    list = children
+}
+
+protocols = imap sieve lmtp pop3
+service dict {
+  unix_listener dict {
+    mode = 0660
+    user = {{ DOVECOT_VMAIL_USER }}
+    group = {{ DOVECOT_VMAIL_GROUP }}
+  }
+}
+
+service log {
+  user = {{ DOVECOT_SERVICE_LOG_USER }}
+}
+
+service config {
+  unix_listener config {
+    user = root
+    group = {{ DOVECOT_VMAIL_GROUP }}
+    mode = 0660
+  }
+}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_AUTH_INET_PORT                                                       #
+#------------------------------------------------------------------------------#
+
+service auth {
+  inet_listener auth-inet {
+    port = {{ DOVECOT_SERVICE_AUTH_AUTH_INET_PORT }}
+  }
+  unix_listener auth-master {
+    mode = 0600
+    user = {{ DOVECOT_VMAIL_USER }}
+  }
+  unix_listener auth-userdb {
+    mode = 0600
+    user = {{ DOVECOT_VMAIL_USER }}
+  }
+}
+
+################################################################################
+# DOVECOT_MANAGESIEVE_CONFIGURATIONS                                           #
+################################################################################
+# LEARN MORE: https://wiki2.dovecot.org/Pigeonhole/ManageSieve/Configuration   #
+################################################################################
+
+service managesieve-login {
+  inet_listener sieve {
+    port = {{ DOVECOT_SERVICE_MANAGESIEVE_LOGIN_SIEVE_PORT }}
+  }
+  service_count = {{ DOVECOT_SERVICE_MANAGESIEVE_LOGIN_SERVICE_COUNT }}
+  process_min_avail = {{ DOVECOT_SERVICE_MANAGESIEVE_LOGIN_PROCESS_MIN_AVAIL }}
+  vsz_limit = {{ DOVECOT_SERVICE_MANAGESIEVE_LOGIN_VSZ_LIMIT }}
+}
+
+service managesieve {
+  process_limit = {{ DOVECOT_SERVICE_MANAGESIEVE_PROCESS_LIMIT }}
+}
+
+################################################################################
+# DOVECOT_LOGIN_PROCESS_CONFIGURATION                                          #
+################################################################################
+#  LEARN MORE: https://wiki.dovecot.org/LoginProcess                           #
+################################################################################
+
+service imap-login {
+  service_count = {{ DOVECOT_SERVICE_IMAP_LOGIN_SERVICE_COUNT }}
+  process_limit = {{ DOVECOT_SERVICE_IMAP_LOGIN_PROCESS_LIMIT }}
+  vsz_limit = {{ DOVECOT_SERVICE_IMAP_LOGIN_VSZ_LIMIT }}
+  user = {{ DOVECOT_SERVICE_IMAP_LOGIN_USER }}
+}
+
+service imap {
+  executable = {{ DOVECOT_SERVICE_IMAP_EXECUTABLE }}
+  user = {{ DOVECOT_VMAIL_USER }}
+  vsz_limit = {{ DOVECOT_SERVICE_IMAP_VSZ_LIMIT }}
+}
+
+################################################################################
+# DOVECOT_POP3_CONFIGURATION                                                   #
+################################################################################
+
+service pop3-login {
+  service_count = {{ DOVECOT_SERVICE_POP3_LOGIN_SERVICE_COUNT }}
+  vsz_limit = {{ DOVECOT_SERVICE_POP3_LOGIN_VSZ_LIMIT }}
+}
+
+################################################################################
+# DOVECOT_LMTP_CONFIGURATION                                                   #
+################################################################################
+# LEARN MORE: https://wiki.dovecot.org/LMTP                                    #
+################################################################################
+
+#------------------------------------------------------------------------------#
+# DOVECOT_LMTP_INET_PORT                                                       #
+#------------------------------------------------------------------------------#
+
+service lmtp {
+  inet_listener lmtp-inet {
+    port = {{ DOVECOT_SERVICE_LMTP_PORT }}
+  }
+  user = {{ DOVECOT_VMAIL_USER }}
+}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_LISTENER_CONFIG                                                      #
+#------------------------------------------------------------------------------#
+listen = {{ DOVECOT_LISTEN }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_TLS_CERTFICATE_AND_KEY                                               #
+#------------------------------------------------------------------------------#
+ssl_cert = {{ DOVECOT_SSL_CERT }}
+ssl_key = {{ DOVECOT_SSL_KEY }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_PROTOCOL_IMAP_CONFIG                                                 #
+#------------------------------------------------------------------------------#
+# LEARN MORE: https://wiki.dovecot.org/ImapMetadata                            #
+#------------------------------------------------------------------------------#
+protocol imap {
+  mail_plugins = {{ DOVECOT_PROTOCOL_IMAP_MAIL_PLUGINS }}
+  imap_metadata = {{ DOVECOT_PROTOCOL_IMAP_IMAP_METADATA }}
+}
+mail_attribute_dict = file:{{ DOVECOT_MAIL_ATTRIBUTE_DICT }}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_PROTOCOL_LMTP_CONFIG                                                 #
+#------------------------------------------------------------------------------#
+protocol lmtp {
+  mail_plugins = {{ DOVECOT_PROTOCOL_LMTP_MAIL_PLUGINS }}
+  auth_socket_path = {{ DOVECOT_PROTOCOL_LMTP_AUTH_SOCKET_PATH }}
+}
+
+#------------------------------------------------------------------------------#
+# DOVECOT_PROTOCOL_SIEVE_CONFIG                                                #
+#------------------------------------------------------------------------------#
+protocol sieve {
+  managesieve_logout_format = {{ DOVECOT_PROTOCOL_SIEVE_MANAGESIEVE_LOGOUT_FORMAT }}
+}
+
+################################################################################
+# DOVECOT PLUGIN CONFIGURATION                                                 #
+################################################################################
+
+plugin {
+  #----------------------------------------------------------------------------#
+  #  Allow "any" or "authenticated" to be used in ACLs                         #
+  #----------------------------------------------------------------------------#
+
+  acl_anyone = {{ DOVECOT_PLUGIN_ACL_ANYONE }}
+  acl_shared_dict = {{ DOVECOT_PLUGIN_ACL_SHARED_DICT }}
+  acl = {{ DOVECOT_PLUGIN_ACL }}
+  fts = {{ DOVECOT_PLUGIN_FTS }}
+  fts_autoindex = {{ DOVECOT_PLUGIN_FTS_AUTOINDEX }}
+  fts_solr = {{ DOVECOT_PLUGIN_FTS_SOLR }}
+  quota = {{ DOVECOT_PLUGIN_QUOTA }}
+  quota_rule2 = {{ DOVECOT_PLUGIN_QUOTA_RULE2 }}
+  sieve = {{ DOVECOT_PLUGIN_SIEVE }}
+  sieve_plugins = {{ DOVECOT_PLUGIN_SIEVE_PLUGINS }}
+  sieve_vacation_send_from_recipient = {{ DOVECOT_PLUGIN_SIEVE_VACATION_SEND_FROM_RECIPIENT }}
+  imapsieve_mailbox1_name = {{ DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX1_NAME }}
+  imapsieve_mailbox1_causes = {{ DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX1_CAUSES }}
+  imapsieve_mailbox1_before = file:{{ DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX1_BEFORE }}
+
+  #----------------------------------------------------------------------------#
+  # From Spam folder to elsewhere                                              #
+  #----------------------------------------------------------------------------#
+  imapsieve_mailbox2_name = {{ DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX2_NAME }}
+  imapsieve_mailbox2_from = {{ DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX2_FROM }}
+  imapsieve_mailbox2_causes = {{ DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX2_CAUSES }}
+  imapsieve_mailbox2_before = file:{{ DOVECOT_PLUGIN_IMAPSIEVE_MAILBOX2_BEFORE }}
+
+  #----------------------------------------------------------------------------#
+  # QUOTA WARNINGS                                                             #
+  #----------------------------------------------------------------------------#
+  quota_warning = {{ DOVECOT_PLUGIN_QUOTA_WARNING }}
+  quota_warning2 = {{ DOVECOT_PLUGIN_QUOTA_WARNING2 }}
+
+  #----------------------------------------------------------------------------#
+  # SIEVE_CONFIGURATIONS                                                       #
+  #----------------------------------------------------------------------------#
+  sieve_pipe_bin_dir = {{ DOVECOT_PLUGIN_SIEVE_PIPE_BIN_DIR }}
+  sieve_global_extensions = {{ DOVECOT_PLUGIN_SIEVE_GLOBAL_EXTENSIONS }}
+  sieve_extensions = {{ DOVECOT_PLUGIN_SIEVE_EXTENSIONS }}
+  sieve_max_script_size = {{ DOVECOT_PLUGIN_SIEVE_MAX_SCRIPT_SIZE }}
+  sieve_max_redirects = {{ DOVECOT_PLUGIN_SIEVE_MAX_REDIRECTS }}
+  sieve_quota_max_scripts = {{ DOVECOT_PLUGIN_SIEVE_QUOTA_MAX_SCRIPTS }}
+  sieve_quota_max_storage = {{ DOVECOT_PLUGIN_SIEVE_QUOTA_MAX_STORAGE }}
+  listescape_char = {{ DOVECOT_PLUGIN_LISTESCAPE_CHAR }}
+  sieve_vacation_min_period = {{ DOVECOT_PLUGIN_SIEVE_VACATION_MIN_PERIOD }}
+  sieve_vacation_max_period = {{ DOVECOT_PLUGIN_SIEVE_VACATION_MAX_PERIOD }}
+  sieve_vacation_default_period = {{ DOVECOT_PLUGIN_SIEVE_VACATION_DEFAULT_PERIOD }}
+  sieve_before = {{ DOVECOT_PLUGIN_SIEVE_BEFORE }}
+  sieve_after = {{ DOVECOT_PLUGIN_SIEVE_AFTER }}
+  sieve_after2 = {{ DOVECOT_PLUGIN_SIEVE_AFTER2 }}
+
+  #----------------------------------------------------------------------------#
+  #  GLOBAL EMAIL ENCRYPTION                                                   #
+  #----------------------------------------------------------------------------#
+  # LEARN MORE: https://wiki.dovecot.org/Plugins/MailCrypt                     #
+  #----------------------------------------------------------------------------#
+  mail_crypt_global_private_key = {{ DOVECOT_MAIL_CRYPT_GLOBAL_PRIVATE_KEY }}
+  mail_crypt_global_public_key = {{ DOVECOT_MAIL_CRYPT_GLOBAL_PUBLIC_KEY }}
+  mail_crypt_save_version = {{ DOVECOT_MAIL_CRYPT_SAVE_VERSION }}
+
+  #----------------------------------------------------------------------------#
+  # Enable compression while saving, lz4 Dovecot v2.2.11+                      #
+  #----------------------------------------------------------------------------#
+  zlib_save = {{ DOVECOT_ZLIB_SAVE }}
+
+  #----------------------------------------------------------------------------#
+  # DOVECOT MAIL LOG                                                           #
+  #----------------------------------------------------------------------------#
+  mail_log_events = {{ DOVECOT_MAIL_LOG_EVENTS }}
+  mail_log_fields = {{ DOVECOT_MAIL_LOG_FIELDS }}
+  mail_log_cached_only = {{ DOVECOT_MAIL_LOG_CACHED_ONLY }}
+}
+
+#------------------------------------------------------------------------------#
+# DOVECOT SERVICE QUOTA WARNING                                                #
+#------------------------------------------------------------------------------#
+service quota-warning {
+  executable = {{ DOVECOT_QUOTA_WARNING_EXECUTABLE }}
+  user = {{ DOVECOT_QUOTA_WARNING_USER }}
+  unix_listener quota-warning {
+    user = {{ DOVECOT_QUOTA_WARNING_USER }}
+  }
+}
+
+dict {
+  sqlquota = mysql:{{ DOVECOT_SQLQUOTA_CONF }}
+  sieve_after = mysql:{{ DOVECOT_SEVIE_AFTER_CONF }}
+  sieve_before = mysql:{{ DOVECOT_SIEVE_BEFORE_CONF }}
+}
+#------------------------------------------------------------------------------#
+# DOVECOT_REMOTE_DISABLE_PLAINTEXT_AUTH                                        #
+#------------------------------------------------------------------------------#
+
+remote 127.0.0.1 {
+  disable_plaintext_auth = {{ DOVECOT_REMOTE_DISABLE_PLAINTEXT_AUTH }}
+}
+
+submission_host = {{ DOVECOT_SUBMISSION_HOST }}:{{ DOVECOT_SUBMISSION_PORT }}
+
+mail_max_userip_connections = {{ DOVECOT_MAIL_MAX_USERIP_CONNECTIONS }}
+
+service imap-postlogin {
+  executable = {{ DOVECOT_IMAP_POSTLOGIN_EXECUTABLE }}
+  unix_listener imap-postlogin {
+  }
+}
+
+service stats {
+  unix_listener stats-writer {
+    mode = 0660
+    user = vmail
+  }
+}
+
+imap_max_line_length = {{ DOVECOT_IMAP_MAX_LINE_LENGHT }}
+auth_cache_verify_password_with_worker = {{ DOVECOT_AUTH_CACHE_VERIFY_PASSWORD_WITH_WORKER }}
+auth_cache_negative_ttl = {{ DOVECOT_CACHE_NEGATIVE_TTL }}
+auth_cache_ttl = {{ DOVECOT_AUTH_CACHE_TTL }}
+auth_cache_size = {{ DOVECOT_AUTH_CACHE_SIZE }}
+default_client_limit = {{ DOVECOT_DEFAULT_CLIENT_LIMIT }}
+
+!include_try {{ DOVECOT_EXTRA_CONFIG_FILE }}
